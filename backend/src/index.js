@@ -1,0 +1,66 @@
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
+import rateLimit from 'express-rate-limit';
+import mongoSanitize from 'express-mongo-sanitize';
+import authRoutes from './routes/auth.js';
+
+// Load environment variables from .env file
+dotenv.config();
+
+const app = express();
+
+// Middleware
+app.use(express.json());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    credentials: true,
+  }),
+);
+app.use(helmet());
+app.use(mongoSanitize());
+app.use(morgan('dev'));
+
+// Basic rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
+
+// Simple health check route
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to intelliDGA API' });
+});
+
+// Placeholder for additional routes
+// Mount your authentication routes
+app.use('/api/auth', authRoutes);
+
+// Database connection and server start
+const PORT = process.env.PORT || 5000;
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/intelliDGA';
+
+async function startServer() {
+  try {
+    await mongoose.connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('Connected to MongoDB');
+    app.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error('Error connecting to database:', err);
+    process.exit(1);
+  }
+}
+
+startServer();
