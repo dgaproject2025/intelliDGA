@@ -21,7 +21,7 @@ app.use(
   cors({
     origin: process.env.CLIENT_URL || 'http://localhost:5173',
     credentials: true,
-  })
+  }),
 );
 app.use(helmet());
 app.use(mongoSanitize());
@@ -39,23 +39,13 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome to intelliDGA API' });
 });
 
-// Dedicated health endpoint
-app.get('/api/health', (req, res) => {
-  res.json({
-    ok: true,
-    service: 'intelliDGA API',
-    time: new Date().toISOString(),
-  });
-});
-
 // Placeholder for additional routes
 // Mount your authentication routes
 app.use('/api/auth', authRoutes);
 
 // Database connection and server start
 const PORT = process.env.PORT || 5000;
-const MONGODB_URI =
-  process.env.MONGODB_URI || 'mongodb://localhost:27017/intelliDGA';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/intelliDGA';
 
 async function startServer() {
   try {
@@ -74,3 +64,5 @@ async function startServer() {
 }
 
 startServer();
+exit
+

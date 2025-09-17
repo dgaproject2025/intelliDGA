@@ -1,16 +1,13 @@
 import React from 'react';
+import HealthCheck from '../components/HealthCheck';
+import AuthPing from '../components/AuthPing';
 
-/**
- * Home page of the application.
- * Serves as a landing page after login.
- */
-const Home = () => {
+export default function Home() {
   return (
-    <div className="container mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Home Page</h2>
-      <p>Welcome to intelliDGA. Use the navigation to explore the application.</p>
+    <div>
+      <h1 className="text-2xl font-bold mb-4">Welcome to intelliDGA</h1>
+      <HealthCheck />
+      <AuthPing />
     </div>
   );
-};
-
-export default Home;
+}
