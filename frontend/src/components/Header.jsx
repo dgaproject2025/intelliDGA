@@ -1,31 +1,79 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import Logo from '../assets/logo.svg';
+import UserMenu from './UserMenu';
 
-/**
- * Header component with navigation links.
- * Includes a placeholder for the application logo and user profile/logout actions.
- */
 const Header = () => {
-  return (
-    <header className="bg-white shadow-md py-4 px-8 flex justify-between items-center">
-      {/* Application logo or name */}
-      <Link to="/" className="text-xl font-bold text-gray-800">
-        intelliDGA
-      </Link>
+  const linkBase =
+    'px-2 py-1 rounded text-sm text-slate-200 hover:text-white hover:bg-slate-700/50';
+  const active = 'px-2 py-1 rounded text-sm text-white bg-slate-700';
 
-      {/* Navigation links */}
-      <nav className="flex items-center gap-4 text-sm">
-        <Link to="/" className="text-gray-700 hover:underline">Home</Link>
-        <Link to="/equipment" className="text-gray-700 hover:underline">Equipment</Link>
-        <Link to="/analysis" className="text-gray-700 hover:underline">Analysis</Link>
-        <Link to="/history" className="text-gray-700 hover:underline">History</Link>
-        <Link to="/report" className="text-gray-700 hover:underline">Report</Link>
-        <Link to="/documentation" className="text-gray-700 hover:underline">Docs</Link>
-        <Link to="/data-input" className="text-gray-700 hover:underline">Data Input</Link>
-        <Link to="/profile" className="text-gray-700 hover:underline">Profile</Link>
-        {/* Logout simply redirects to login for now */}
-        <Link to="/login" className="text-gray-700 hover:underline">Logout</Link>
-      </nav>
+  return (
+    <header className="bg-black/95 backdrop-blur sticky top-0 z-50 border-b border-slate-800">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+        {/* Logo (left) */}
+        <Link to="/" className="flex items-center gap-3">
+          <img src={Logo} alt="IntelliDGA logo" className="h-12 w-auto" />
+        </Link>
+
+        {/* Nav links (center/right) */}
+        <nav className="hidden md:flex items-center gap-2">
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) => (isActive ? active : linkBase)}
+          >
+            Home
+          </NavLink>
+          <NavLink
+            to="/equipment"
+            className={({ isActive }) => (isActive ? active : linkBase)}
+          >
+            Equipment
+          </NavLink>
+          <NavLink
+            to="/analysis"
+            className={({ isActive }) => (isActive ? active : linkBase)}
+          >
+            Analysis
+          </NavLink>
+          <NavLink
+            to="/history"
+            className={({ isActive }) => (isActive ? active : linkBase)}
+          >
+            History
+          </NavLink>
+          <NavLink
+            to="/report"
+            className={({ isActive }) => (isActive ? active : linkBase)}
+          >
+            Report
+          </NavLink>
+          <NavLink
+            to="/documentation"
+            className={({ isActive }) => (isActive ? active : linkBase)}
+          >
+            Docs
+          </NavLink>
+          <NavLink
+            to="/data-input"
+            className={({ isActive }) => (isActive ? active : linkBase)}
+          >
+            Data Input
+          </NavLink>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) => (isActive ? active : linkBase)}
+          >
+            Profile
+          </NavLink>
+        </nav>
+
+        {/* User icon/menu (right) */}
+        <div className="ml-4">
+          <UserMenu />
+        </div>
+      </div>
     </header>
   );
 };
