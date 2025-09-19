@@ -41,7 +41,28 @@ export const logoutUser = async () => {
 };
 
 export const getMe = async () => {
-  const { data } = await api.get('/api/auth/me', { withCredentials: true });
+  try {
+    const { data } = await api.get('/api/auth/me', { withCredentials: true });
+    return data; // { user: {...} }
+  } catch (err) {
+    if (err?.response?.status === 401) {
+      // not authenticated: return a benign value and DON'T throw
+      return { user: null };
+    }
+    throw err;
+  }
+};
+
+export const requestPasswordReset = async (email) => {
+  const { data } = await api.post('/api/auth/request-reset', { email });
+  return data;
+};
+
+export const resetPassword = async ({ token, password }) => {
+  const { data } = await api.post('/api/auth/reset-password', {
+    token,
+    password,
+  });
   return data;
 };
 

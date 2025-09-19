@@ -1,9 +1,12 @@
+// frontend/src/pages/Signup.jsx
 import { useState } from 'react';
 import { signupUser } from '../services/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // ⬅️ add Link here
+import { useToast } from '../hooks/useToast';
 
 export default function Signup() {
   const navigate = useNavigate();
+  const toast = useToast();
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -12,29 +15,26 @@ export default function Signup() {
     password: '',
     organization: '',
   });
-  const [msg, setMsg] = useState('');
-  const [err, setErr] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setMsg('');
-    setErr('');
+    if (loading) return;
+    setLoading(true);
     try {
       const res = await signupUser(form);
-      setMsg(res.message || 'Signup successful');
-      setTimeout(() => navigate('/'), 800);
+      toast.success(res?.message || 'Signup successful!');
+      window.dispatchEvent(new Event('auth:changed'));
+      setTimeout(() => navigate('/'), 300);
     } catch (error) {
-      setErr(error?.response?.data?.message || error.message);
+      const msg =
+        error?.response?.data?.message || error.message || 'Signup failed';
+      toast.error(msg);
+    } finally {
+      setLoading(false);
     }
-    const res = await signupUser(form);
-    setMsg(res.message || 'Signup successful');
-
-    // 🔔 notify others
-    window.dispatchEvent(new Event('auth:changed'));
-
-    setTimeout(() => navigate('/'), 300);
   };
 
   return (
@@ -63,12 +63,22 @@ export default function Signup() {
           className="w-full border rounded px-3 py-2"
           required
         />
-        <button className="w-full bg-blue-600 text-white rounded py-2">
-          Sign up
+
+        <button
+          disabled={loading}
+          className="w-full bg-blue-600 text-white rounded py-2"
+        >
+          {loading ? 'Creating...' : 'Sign up'}
         </button>
       </form>
-      {msg && <p className="text-green-600 mt-3">{msg}</p>}
-      {err && <p className="text-red-600 mt-3">Error: {err}</p>}
+
+      {/* ⬇️ Add this helper line below the form */}
+      <p className="text-sm mt-2 text-center">
+        Already have an account?{' '}
+        <Link to="/login" className="text-blue-600 hover:underline">
+          Login
+        </Link>
+      </p>
     </div>
   );
 }

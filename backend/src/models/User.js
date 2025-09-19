@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      //unique: true, // ensures the same user cannot have multiple organizations
+      // unique: true, // keep disabled to allow multiple users per org
     },
     role: {
       type: String,
@@ -57,23 +57,15 @@ const userSchema = new mongoose.Schema(
     },
 
     // 🔎 Audit fields
-    lastLogin: {
-      type: Date,
-    },
-    loginAttempts: {
-      type: Number,
-      default: 0,
-    },
-    lockedUntil: {
-      type: Date, // if too many failed attempts, lock account until this date
-    },
-    createdBy: {
-      type: String, // username or ID of creator
-      default: 'system',
-    },
-    updatedBy: {
-      type: String, // username or ID of last updater
-    },
+    lastLogin: { type: Date },
+    loginAttempts: { type: Number, default: 0 },
+    lockedUntil: { type: Date },
+    createdBy: { type: String, default: 'system' },
+    updatedBy: { type: String },
+
+    // 🔑 Password reset
+    resetToken: { type: String },
+    resetTokenExpires: { type: Date },
   },
   { timestamps: true } // adds createdAt and updatedAt automatically
 );

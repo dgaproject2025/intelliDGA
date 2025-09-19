@@ -11,6 +11,10 @@ import Report from './pages/Report';
 import Documentation from './pages/Documentation';
 import DataInputPortal from './pages/DataInputPortal';
 import UserProfile from './pages/UserProfile';
+import RequireAuth from './components/RequireAuth';
+
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
   return (
@@ -19,16 +23,22 @@ function App() {
         <Header />
         <main className="flex-grow bg-gray-50 px-4 py-8">
           <Routes>
+            {/* Public routes */}
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/equipment" element={<Equipment />} />
-            <Route path="/analysis" element={<Analysis />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/report" element={<Report />} />
-            <Route path="/documentation" element={<Documentation />} />
-            <Route path="/data-input" element={<DataInputPortal />} />
-            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            {/* Protected routes */}
+            <Route element={<RequireAuth />}>
+              <Route path="/equipment" element={<Equipment />} />
+              <Route path="/analysis" element={<Analysis />} />
+              <Route path="/history" element={<History />} />
+              <Route path="/report" element={<Report />} />
+              <Route path="/documentation" element={<Documentation />} />
+              <Route path="/data-input" element={<DataInputPortal />} />
+              <Route path="/profile" element={<UserProfile />} />
+            </Route>
           </Routes>
         </main>
       </div>

@@ -1,38 +1,49 @@
-import { useState } from 'react';
+// frontend/src/pages/Login.jsx
+import { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate, Link } from 'react-router-dom'; // ⬅️ add Link here
 import { loginUser } from '../services/api';
-import { useNavigate } from 'react-router-dom';
+import { useToast } from '../hooks/useToast';
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const toast = useToast();
+  const warnedRef = useRef(false); // prevents duplicate toast
+
   const [form, setForm] = useState({ emailOrUsername: '', password: '' });
-  const [msg, setMsg] = useState('');
-  const [err, setErr] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // show “login required” exactly once after redirect
+  useEffect(() => {
+    if (location.state?.reason === 'auth-required' && !warnedRef.current) {
+      warnedRef.current = true;
+      toast.error('You must be logged in to access that page.');
+      window.history.replaceState({}, '');
+    }
+  }, [location.state, toast]);
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setMsg('');
-    setErr('');
+    if (loading) return;
+    setLoading(true);
     try {
       const payload = form.emailOrUsername.includes('@')
         ? { email: form.emailOrUsername, password: form.password }
         : { username: form.emailOrUsername, password: form.password };
 
       const res = await loginUser(payload);
-      setMsg(res.message || 'Login successful');
-      setTimeout(() => navigate('/'), 800);
-    } catch (error) {
-      setErr(error?.response?.data?.message || error.message);
+      toast.success(res?.message || 'Login successful!');
+      window.dispatchEvent(new Event('auth:changed'));
+      const dest = location.state?.from || '/';
+      setTimeout(() => navigate(dest), 200);
+    } catch (err) {
+      const msg = err?.response?.data?.message || err.message || 'Login failed';
+      toast.error(msg);
+    } finally {
+      setLoading(false);
     }
-    // inside onSubmit success block
-    const res = await loginUser(payload);
-    setMsg(res.message || 'Login successful');
-
-    // 🔔 notify others (e.g., Header/UserMenu) that auth state changed
-    window.dispatchEvent(new Event('auth:changed'));
-
-    setTimeout(() => navigate('/'), 300);
   };
 
   return (
@@ -56,12 +67,20 @@ export default function Login() {
           className="w-full border rounded px-3 py-2"
           required
         />
-        <button className="w-full bg-blue-600 text-white rounded py-2">
-          Login
+
+        <p className="text-right text-sm">
+          <Link to="/forgot-password" className="text-blue-600 hover:underline">
+            Forgot password?
+          </Link>
+        </p>
+
+        <button
+          className="w-full bg-blue-600 text-white rounded py-2"
+          disabled={loading}
+        >
+          {loading ? 'Signing in...' : 'Login'}
         </button>
       </form>
-      {msg && <p className="text-green-600 mt-3">{msg}</p>}
-      {err && <p className="text-red-600 mt-3">Error: {err}</p>}
     </div>
   );
 }

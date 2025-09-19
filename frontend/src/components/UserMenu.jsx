@@ -41,17 +41,7 @@ export default function UserMenu() {
     refreshUser();
   }, []);
 
-  // 2) Refetch on route change (e.g., after navigate("/"))
-  useEffect(() => {
-    refreshUser();
-  }, [location.pathname]);
-
-  // 3) Refetch when we open the menu
-  useEffect(() => {
-    if (open) refreshUser();
-  }, [open]);
-
-  // 4) Refetch when auth state changes (from Login/Signup)
+  // 2) Refetch when auth state changes (Login/Signup/Logout dispatch "auth:changed")
   useEffect(() => {
     const handler = () => refreshUser();
     window.addEventListener('auth:changed', handler);
@@ -138,6 +128,15 @@ export default function UserMenu() {
               >
                 Log in
               </Link>
+              {/* 🔽 New for guests */}
+              <Link
+                to="/forgot-password"
+                className="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-800"
+                onClick={() => setOpen(false)}
+                role="menuitem"
+              >
+                Reset password
+              </Link>
             </div>
           ) : (
             <div className="p-2">
@@ -148,6 +147,16 @@ export default function UserMenu() {
                 role="menuitem"
               >
                 Profile
+              </Link>
+
+              {/* 🔽 New for logged-in users (self-service reset via email flow) */}
+              <Link
+                to="/forgot-password"
+                className="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-800"
+                onClick={() => setOpen(false)}
+                role="menuitem"
+              >
+                Reset password
               </Link>
               <button
                 className="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-800"

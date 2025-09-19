@@ -61,12 +61,6 @@ const Header = () => {
           >
             Data Input
           </NavLink>
-          <NavLink
-            to="/profile"
-            className={({ isActive }) => (isActive ? active : linkBase)}
-          >
-            Profile
-          </NavLink>
         </nav>
 
         {/* User icon/menu (right) */}
