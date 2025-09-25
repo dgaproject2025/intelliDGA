@@ -66,6 +66,12 @@ const userSchema = new mongoose.Schema(
     // 🔑 Password reset
     resetToken: { type: String },
     resetTokenExpires: { type: Date },
+
+    // 🕒 Track when password was last changed (for expiry/notifications)
+    passwordLastChanged: {
+      type: Date,
+      default: Date.now,
+    },
   },
   { timestamps: true } // adds createdAt and updatedAt automatically
 );

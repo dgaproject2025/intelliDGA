@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import Logo from '../assets/logo.svg';
+import useAuthStatus from '../hooks/useAuthStatus';
+import NotificationBell from './NotificationBell';
 import UserMenu from './UserMenu';
 
 const Header = () => {
+  const { showWarning, daysLeft, passwordLastChanged } = useAuthStatus();
   const linkBase =
     'px-2 py-1 rounded text-sm text-slate-200 hover:text-white hover:bg-slate-700/50';
   const active = 'px-2 py-1 rounded text-sm text-white bg-slate-700';
@@ -63,8 +66,14 @@ const Header = () => {
           </NavLink>
         </nav>
 
-        {/* User icon/menu (right) */}
-        <div className="ml-4">
+        {/* Right side actions */}
+        <div className="flex items-center gap-3">
+          {/* 🔔 Bell left of user icon */}
+          <NotificationBell
+            showWarning={showWarning}
+            daysLeft={daysLeft}
+            passwordLastChanged={passwordLastChanged}
+          />
           <UserMenu />
         </div>
       </div>

@@ -1,6 +1,12 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import {
+  needsPasswordReset,
+  isPasswordExpired,
+  isInWarningWindow,
+  daysUntilExpiry,
+} from '../utils/passwordPolicy.js';
 
 /** CONFIG */
 const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_change_me';
@@ -99,11 +105,9 @@ export const registerUser = async (req, res) => {
     // Friendly duplicate handling (Mongo E11000)
     if (err?.code === 11000) {
       const field = Object.keys(err.keyPattern || {})[0] || 'field';
-      return res
-        .status(409)
-        .json({
-          message: `Duplicate value for ${field}. Please use a different ${field}.`,
-        });
+      return res.status(409).json({
+        message: `Duplicate value for ${field}. Please use a different ${field}.`,
+      });
     }
 
     return res.status(500).json({ message: 'Server error' });
@@ -163,6 +167,16 @@ export const loginUser = async (req, res) => {
     user.lockedUntil = undefined;
     user.status = 'active';
     user.lastLogin = new Date();
+
+    // ⛔ If password is expired, DO NOT issue a session
+    if (isPasswordExpired(user)) {
+      await user.save({ validateBeforeSave: false });
+      return res.status(403).json({
+        message: 'Your password has expired. Please reset it to continue.',
+        code: 'PASSWORD_EXPIRED',
+      });
+    }
+
     await user.save({ validateBeforeSave: false });
 
     const token = signToken({ id: user._id, role: user.role });
@@ -176,7 +190,7 @@ export const loginUser = async (req, res) => {
         email: user.email,
         mobile: user.mobile,
         username: user.username,
-        organization: user.organization_1,
+        organization: user.organization,
         role: user.role,
         lastLogin: user.lastLogin,
       },
@@ -200,11 +214,44 @@ export const logoutUser = async (_req, res) => {
 
 /** GET /api/auth/me */
 export const getMe = async (req, res) => {
+  console.log('[getMe v2] hit');
   try {
-    // req.user is set by auth middleware
     const me = await User.findById(req.user.id).select('-password');
     if (!me) return res.status(404).json({ message: 'User not found' });
-    return res.json({ user: me });
+
+    // --- Password expiration policy: 90-day max, warn in last 7 days ---
+    const last = me.passwordLastChanged || me.createdAt;
+    const now = new Date();
+
+    const MAX_AGE_DAYS = 90;
+    const WARN_WINDOW_DAYS = 7;
+
+    const expiryAt = new Date(
+      last.getTime() + MAX_AGE_DAYS * 24 * 60 * 60 * 1000
+    );
+    const diffMs = expiryAt.getTime() - now.getTime();
+    const daysLeftRaw = Math.ceil(diffMs / (24 * 60 * 60 * 1000));
+
+    const isExpired = now >= expiryAt;
+    const showWarning =
+      !isExpired && daysLeftRaw > 0 && daysLeftRaw <= WARN_WINDOW_DAYS;
+    const daysLeft = showWarning ? daysLeftRaw : null;
+
+    return res.json({
+      user: {
+        id: me._id,
+        fullName: me.fullName,
+        email: me.email,
+        username: me.username,
+        role: me.role,
+        organization: me.organization,
+        passwordLastChanged: last,
+      },
+      isExpired,
+      showWarning,
+      daysLeft,
+      mustReset: isExpired, // keep for compatibility with older code
+    });
   } catch (err) {
     console.error('getMe error:', err);
     return res.status(500).json({ message: 'Server error' });
