@@ -166,7 +166,7 @@ const HeroSection = () => {
                     <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight drop-shadow-lg">
                       {slide.content.title}
                     </h1>
-                    <p className="mt-4 text-lg text-gray-200 drop-shadow-md">
+                    <p className="mt-4 text-lg text-gray-200 drop-shadow-md ">
                       {slide.content.description}
                     </p>
                     <div className="mt-8 flex justify-center gap-4 ">

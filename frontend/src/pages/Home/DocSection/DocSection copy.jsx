@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 import {
+  BeakerIcon,
   ExclamationTriangleIcon,
   ChartPieIcon,
   CircleStackIcon,
-  BeakerIcon,
   KeyIcon,
   ScaleIcon,
   DocumentTextIcon,
@@ -13,8 +13,7 @@ import {
   PuzzlePieceIcon,
 } from '@heroicons/react/24/outline';
 
-// Import your custom and content components
-import GasFormationIcon from './GasFormation/GasFormationIcon';
+// Import the dedicated content component
 import GasFormationContent from './GasFormation/GasFormationContent';
 import FaultTypeContent from './FaultType/FaultTypeContent';
 import KeyGasRatioContent from './KeyGasRatio/KeyGasRatioContent';
@@ -25,6 +24,7 @@ const docTopics = [
     id: 1,
     title: 'Gas Formation',
     icon: <BeakerIcon className="w-5 h-5" />,
+    // We reference the imported component here.
     component: <GasFormationContent />,
   },
   {
@@ -37,12 +37,13 @@ const docTopics = [
     id: 3,
     title: 'Key Gas Ratios',
     icon: <ScaleIcon className="w-5 h-5" />,
+    // UPDATED: Replaced the placeholder with the new component
     component: <KeyGasRatioContent />,
   },
   {
     id: 4,
     title: 'Conventional Methods',
-    // NO ICON here for the large content panel, so it will render full-width
+    icon: <CircleStackIcon className="w-5 h-5" />,
     component: <ConventionalMethodsContent />,
   },
   { id: 5, title: 'The Key Gas Method', icon: <KeyIcon className="w-5 h-5" /> },
@@ -69,7 +70,7 @@ const docTopics = [
     content: {
       heading: 'A Graphical Diagnostic Tool',
       description:
-        'The Duval Triangle is an internationally recognized graphical method that uses the relative concentrations of methane (CH₄), ethylene (C₂H₄), and acetylene (C₂H₂) to visually diagnose the type of fault.',
+        'The Duval Triangle is an internationally recognized graphical method that uses the relative concentrations of methane ($CH_4$), ethylene ($C_2H_4$), and acetylene ($C_2H_2$) to visually diagnose the type of fault.',
       points: [
         '<strong>Principle:</strong> Maps the percentage of each gas onto a triangular plot with defined fault zones.',
         '<strong>Fault Zones:</strong> Includes PD, Thermal Faults (T1, T2, T3), and Discharges (D1, D2).',
@@ -147,7 +148,6 @@ const DocSection = () => {
                       : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800/50 hover:text-gray-800 dark:hover:text-gray-200'
                   }`}
                 >
-                  {/* Icon will show here if it exists in docTopics */}
                   {tab.icon}
                   {tab.title}
                 </button>
@@ -155,77 +155,63 @@ const DocSection = () => {
             </div>
           </nav>
 
-          {/* UPDATED: This container now conditionally renders based on if a component is defined */}
-          <div className="p-8 sm:p-10 min-h-[450px]">
-            <div key={activeTab} className="animate-fadeIn">
-              {activeTopic?.component ? (
-                // If a custom component is defined for the tab, render it directly. It will take the full width.
-                activeTopic.component
-              ) : (
-                // Otherwise, render the default layout with icon and placeholder text
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-                  <div className="hidden md:flex justify-center items-center p-6 bg-gradient-to-br from-sky-100 to-blue-200 dark:from-slate-800 dark:to-slate-700 rounded-2xl h-48 w-48 mx-auto shadow-lg">
-                    <div className="text-[#1f75fe] dark:text-sky-300">
-                      {activeTopic &&
-                        activeTopic.icon &&
-                        React.cloneElement(activeTopic.icon, {
-                          className: 'w-24 h-24',
-                        })}
-                    </div>
-                  </div>
-                  <div className="md:col-span-2">
-                    {activeTopic?.content ? (
-                      <>
-                        <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-                          {activeTopic.content.heading}
-                        </h3>
-                        <p
-                          className="mt-3 text-base text-gray-700 dark:text-gray-300 leading-relaxed"
-                          dangerouslySetInnerHTML={{
-                            __html: activeTopic.content.description,
-                          }}
-                        />
-                        {activeTopic.content.points && (
-                          <ul className="mt-6 space-y-4">
-                            {activeTopic.content.points.map((point, i) => (
-                              <li key={i} className="flex items-start">
-                                <div className="flex-shrink-0 mt-1">
-                                  <svg
-                                    className="h-5 w-5 text-[#1f75fe]"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                </div>
-                                <span
-                                  className="ml-3 text-gray-700 dark:text-gray-300"
-                                  dangerouslySetInnerHTML={{ __html: point }}
+          <div className="p-8 sm:p-10 grid md:grid-cols-3 gap-8 items-center min-h-[450px]">
+            <div className="hidden md:flex justify-center items-center p-6 bg-gradient-to-br from-sky-100 to-blue-200 dark:from-slate-800 dark:to-slate-700 rounded-2xl h-48 w-48 mx-auto shadow-lg">
+              <div className="text-[#1f75fe] dark:text-sky-300">
+                {activeTopic &&
+                  React.cloneElement(activeTopic.icon, {
+                    className: 'w-24 h-24',
+                  })}
+              </div>
+            </div>
+
+            <div className="md:col-span-2">
+              <div key={activeTab} className="animate-fadeIn">
+                {/* ============================================================= */}
+                {/* CORRECTED: This logic now correctly renders the component */}
+                {/* ============================================================= */}
+                {activeTopic?.component ? (
+                  activeTopic.component
+                ) : (
+                  // Fallback for topics without a dedicated component
+                  <>
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                      {activeTopic?.content?.heading || 'Content Coming Soon'}
+                    </h3>
+                    <p className="mt-3 text-base text-gray-700 dark:text-gray-300 leading-relaxed">
+                      {activeTopic?.content?.description ||
+                        `Detailed information for the "${activeTopic?.title}" method is being prepared.`}
+                    </p>
+                    {/* CORRECTED: This list rendering is now fixed */}
+                    {activeTopic?.content?.points && (
+                      <ul className="mt-6 space-y-4">
+                        {activeTopic.content.points.map((point, i) => (
+                          <li key={i} className="flex items-start">
+                            <div className="flex-shrink-0 mt-1">
+                              <svg
+                                className="h-5 w-5 text-[#1f75fe]"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                  clipRule="evenodd"
                                 />
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-                          Content Coming Soon
-                        </h3>
-                        <p className="mt-3 text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                          Detailed information for the "{activeTopic?.title}"
-                          method is being prepared.
-                        </p>
-                      </>
+                              </svg>
+                            </div>
+                            <span
+                              className="ml-3 text-gray-700 dark:text-gray-300"
+                              dangerouslySetInnerHTML={{ __html: point }}
+                            />
+                          </li>
+                        ))}
+                      </ul>
                     )}
-                  </div>
-                </div>
-              )}
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
