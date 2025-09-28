@@ -186,4 +186,80 @@ router.post('/reset-password', async (req, res) => {
   }
 });
 
+// POST /api/auth/reset-with-identifiers
+router.post('/reset-with-identifiers', async (req, res) => {
+  try {
+    const { username, email, mobile, oldPassword, newPassword } =
+      req.body || {};
+    if (!oldPassword || !newPassword) {
+      return res
+        .status(400)
+        .json({ message: 'Old and new password are required.' });
+    }
+
+    // at least two identifiers among username/email/mobile
+    const provided = [
+      ['username', username],
+      ['email', email?.toLowerCase()],
+      ['mobile', mobile],
+    ].filter(([, v]) => v && String(v).trim() !== '');
+
+    if (provided.length < 2) {
+      return res
+        .status(400)
+        .json({ message: 'Provide any two of username, email, mobile.' });
+    }
+
+    // Build a query requiring ALL provided identifiers to match
+    const andClauses = provided.map(([k, v]) => ({ [k]: v }));
+    const user = await User.findOne({ $and: andClauses }).select('+password');
+
+    if (!user) {
+      // avoid enumeration
+      return res
+        .status(400)
+        .json({ message: 'Invalid identifiers or credentials.' });
+    }
+
+    // verify old password
+    const ok = await bcrypt.compare(oldPassword, user.password);
+    if (!ok) {
+      return res
+        .status(400)
+        .json({ message: 'Invalid identifiers or credentials.' });
+    }
+
+    // reject if new == old
+    const same = await bcrypt.compare(newPassword, user.password);
+    if (same) {
+      return res.status(400).json({
+        message: 'New password cannot be the same as the current password.',
+      });
+    }
+
+    // update password
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+    user.passwordLastChanged = new Date();
+    user.resetToken = undefined;
+    user.resetTokenExpires = undefined;
+    await user.save();
+
+    // force re-login
+    res.clearCookie('token', {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+    });
+
+    return res
+      .status(200)
+      .json({ message: 'Password updated. Please log in.' });
+  } catch (err) {
+    console.error('reset-with-identifiers error:', err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+});
+
 export default router;

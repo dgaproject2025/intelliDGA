@@ -50,12 +50,29 @@ export default function UserMenu() {
 
   const initial = user?.fullName?.trim()?.[0]?.toUpperCase() || null;
 
-  const handleLogout = async () => {
+  /*const handleLogout = async () => {
     await logoutUser();
     setUser(null);
     setOpen(false);
     setToast('Logout Successful !');
     navigate('/'); // go to Home (your router uses "/" as Home)
+  };*/
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser(); // clear cookie/session in backend
+      setUser(null); // clear local state
+      setOpen(false); // close the menu
+      setToast('Logout Successful !');
+
+      // 🔔 Tell the whole app (Header, etc.) that auth state changed
+      window.dispatchEvent(new Event('auth:changed'));
+
+      navigate('/'); // redirect to home (or login page)
+    } catch (err) {
+      console.error('Logout error:', err);
+      setToast('Logout failed. Please try again.');
+    }
   };
 
   // The icon button (left: default, right: initial when logged in)

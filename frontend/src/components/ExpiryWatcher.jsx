@@ -1,62 +1,82 @@
-import { useEffect, useState } from 'react';
+// frontend/src/components/ExpiryWatcher.jsx
+import { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import useAuthStatus from '../hooks/useAuthStatus';
 import { logoutUser } from '../services/api';
 
 export default function ExpiryWatcher() {
   const { user, isExpired, refresh } = useAuthStatus();
-  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const actedRef = useRef(false);
+  const bcRef = useRef(null);
 
+  // Set up a cross-tab channel so other tabs react immediately
   useEffect(() => {
-    if (user && isExpired) setOpen(true);
-  }, [user, isExpired]);
-
-  // refresh every 2 minutes to catch expiration
-  useEffect(() => {
-    const id = setInterval(() => refresh(), 120000);
-    return () => clearInterval(id);
+    // BroadcastChannel is widely supported in modern browsers
+    try {
+      bcRef.current = new BroadcastChannel('intelliDGA-auth');
+      const onMsg = (ev) => {
+        if (ev?.data?.type === 'auth:changed') {
+          refresh();
+        }
+      };
+      bcRef.current.addEventListener('message', onMsg);
+      return () => bcRef.current?.removeEventListener('message', onMsg);
+    } catch {
+      // no-op if not supported
+    }
   }, [refresh]);
 
-  async function handleProceed() {
-    try {
-      await logoutUser();
-    } catch {}
-    setOpen(false);
-    navigate('/login', {
-      replace: true,
-      state: { reason: 'password-expired', from: location.pathname },
-    });
-  }
+  // Poll every 60s when logged in
+  useEffect(() => {
+    if (!user) return;
+    const id = setInterval(() => refresh(), 60_000);
+    return () => clearInterval(id);
+  }, [user, refresh]);
 
-  if (!open) return null;
+  // Refresh on tab focus/visibility
+  useEffect(() => {
+    const onFocusOrVisible = () => refresh();
+    window.addEventListener('focus', onFocusOrVisible);
+    document.addEventListener('visibilitychange', onFocusOrVisible);
+    return () => {
+      window.removeEventListener('focus', onFocusOrVisible);
+      document.removeEventListener('visibilitychange', onFocusOrVisible);
+    };
+  }, [refresh]);
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="w-full max-w-md rounded-xl bg-white p-5 text-slate-900 shadow-2xl">
-        <h3 className="text-lg font-semibold text-red-600 mb-2">
-          Password expired
-        </h3>
-        <p className="text-sm mb-4">
-          Your password has reached the 90-day limit. Please reset it to
-          continue using IntelliDGA.
-        </p>
-        <div className="flex justify-end gap-2">
-          <button
-            onClick={() => navigate('/forgot-password')}
-            className="px-3 py-1.5 rounded-lg bg-red-600 text-white text-sm"
-          >
-            Reset password
-          </button>
-          <button
-            onClick={handleProceed}
-            className="px-3 py-1.5 rounded-lg bg-slate-200 text-slate-900 text-sm"
-          >
-            Go to Login
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+  // Auto-logout & redirect once when password is expired
+  useEffect(() => {
+    if (!user) return;
+    if (!isExpired) {
+      actedRef.current = false;
+      return;
+    }
+    if (isExpired && !actedRef.current) {
+      actedRef.current = true;
+
+      (async () => {
+        try {
+          await logoutUser();
+        } catch {
+          // ignore network error; we still clear client state
+        }
+
+        // Tell the rest of the app/tabs
+        window.dispatchEvent(new Event('auth:changed'));
+        try {
+          bcRef.current?.postMessage({ type: 'auth:changed' });
+        } catch {}
+
+        // Hard redirect to login with a clear reason; Login.jsx will open the modal
+        const from = encodeURIComponent(location.pathname + location.search);
+        navigate(`/login?reason=password-expired&from=${from}`, {
+          replace: true,
+        });
+      })();
+    }
+  }, [user, isExpired, navigate, location.pathname, location.search]);
+
+  return null;
 }

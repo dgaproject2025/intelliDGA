@@ -99,9 +99,9 @@
   </g>
 
   <!-- Wordmark -->
-  <text x="130" y="78" dominant-baseline="middle" fill="#ff7f51"
+  <text x="130" y="78" dominant-baseline="middle" fill="#D97706 "
     font-family="'Playfair Display', serif" font-size="36" font-weight="900" letter-spacing="0.5px"
-    class="anim" style="animation: shimmer 4.5s ease-in-out infinite;">
-    intelliDGA
+    class="anim text-white dark:text-amber-300" style="animation: shimmer 4.5s ease-in-out infinite;">
+    
   </text>
 </svg>

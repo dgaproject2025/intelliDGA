@@ -9,7 +9,9 @@ import rateLimit from 'express-rate-limit';
 import mongoSanitize from 'express-mongo-sanitize';
 import authRoutes from './routes/auth.js';
 
+// Load environment variables from .env file
 dotenv.config();
+
 const app = express();
 
 // Middleware
@@ -25,31 +27,14 @@ app.use(helmet());
 app.use(mongoSanitize());
 app.use(morgan('dev'));
 
-// 🔒 Rate limiter for login/signup (moderate protection)
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 min window
-  max: 20, // 20 attempts in 15 mins
-  message: {
-    message: 'Too many login/signup attempts, please try again later.',
-  },
+// Basic rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
 });
+app.use(limiter);
 
-// 🔒 Stricter limiter for password reset requests
-const resetLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour window
-  max: 5, // only 5 reset attempts per hour per IP
-  message: { message: 'Too many password reset requests, try again later.' },
-});
-
-// Apply to sensitive routes only
-app.use('/api/auth/login', authLimiter);
-app.use('/api/auth/signup', authLimiter);
-app.use('/api/auth/request-reset', resetLimiter);
-
-// Routes
-app.use('/api/auth', authRoutes);
-
-// Health check
+// Simple health check route
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to intelliDGA API' });
 });
@@ -63,8 +48,12 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// DB + server
-const PORT = process.env.PORT || 6500;
+// Placeholder for additional routes
+// Mount your authentication routes
+app.use('/api/auth', authRoutes);
+
+// Database connection and server start
+const PORT = process.env.PORT || 5000;
 const MONGODB_URI =
   process.env.MONGODB_URI || 'mongodb://localhost:27017/intelliDGA';
 

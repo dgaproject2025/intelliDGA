@@ -1,79 +1,111 @@
-import { useState } from 'react';
+// frontend/src/components/NotificationBell.jsx
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ModalShell from './ModalShell';
 
-export default function NotificationBell({
-  showWarning,
-  daysLeft,
-  passwordLastChanged,
-}) {
-  const [open, setOpen] = useState(false);
+function ExpiryDialog({ open, onClose, daysLeft, lastChanged }) {
   const navigate = useNavigate();
+  if (!open) return null;
 
-  // Render nothing unless in warning window
-  if (!showWarning || !daysLeft || daysLeft <= 0) return null;
+  const goReset = (e) => {
+    e.preventDefault();
+    onClose?.(); // close first (match Signin/Signup behavior)
+    navigate('/forgot-password', { replace: false });
+  };
 
-  const dateStr = passwordLastChanged
-    ? new Date(passwordLastChanged).toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      })
-    : null;
+  const titleTone =
+    daysLeft >= 4 && daysLeft <= 7
+      ? 'text-amber-600'
+      : daysLeft <= 1
+      ? 'text-red-600'
+      : 'text-orange-600';
 
+  return (
+    <ModalShell open={open} onClose={onClose} title="Password reminder">
+      <div className="space-y-3">
+        <p className={`text-sm font-medium ${titleTone}`}>
+          Your password will expire in{' '}
+          <span className="font-bold">
+            {Math.max(0, daysLeft)} day{daysLeft === 1 ? '' : 's'}
+          </span>
+          .
+        </p>
+
+        <p className="text-sm text-slate-700 dark:text-slate-300">
+          Last changed on:{' '}
+          <span className="font-semibold">
+            {lastChanged
+              ? new Date(lastChanged).toLocaleDateString()
+              : 'Unknown'}
+          </span>
+          .
+        </p>
+
+        <div className="pt-2 flex justify-end gap-2">
+          <button
+            onClick={goReset}
+            className="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition"
+          >
+            Reset Password
+          </button>
+          <button
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600
+                       text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </ModalShell>
+  );
+}
+
+export default function NotificationBell({ show, daysLeft, lastChanged }) {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!show && open) setOpen(false);
+  }, [show, open]);
+
+  if (!show) return null;
+
+  // red bell + pulsing badge (unchanged)
   return (
     <div className="relative">
       <button
-        aria-label="Password expiry notification"
-        onClick={() => setOpen((v) => !v)}
-        className="relative inline-flex items-center justify-center h-9 w-9 rounded-full
-                   bg-red-600 text-white hover:bg-red-500 transition"
+        aria-label="Password expiry notifications"
+        onClick={() => setOpen(true)}
+        className="relative inline-flex items-center justify-center h-10 w-10 rounded-full
+                   text-red-600 hover:text-red-700 transition hover:scale-110 hover:drop-shadow-md"
+        title={`Password expires in ${Math.max(0, daysLeft)} day${
+          daysLeft === 1 ? '' : 's'
+        }`}
       >
-        {/* Bell icon */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          fill="none"
+          className="h-6 w-6"
           viewBox="0 0 24 24"
-          stroke="currentColor"
+          fill="currentColor"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 
-                   6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C8.67 6.165 
-                   8 7.388 8 8.75V14.158c0 .538-.214 1.055-.595 
-                   1.437L6 17h5m4 0v1a3 3 0 11-6 0v-1m6 0H9"
-          />
+          <path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22zm6-6V11a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2z" />
         </svg>
-        <span className="absolute -top-1 -right-1 bg-white text-red-600 text-xs font-bold rounded-full px-1">
-          {daysLeft}
+
+        <span
+          className="absolute -top-1 -right-2 bg-red-600 text-white 
+                     text-[11px] font-bold rounded-full px-1.5 py-0.5
+                     animate-pulse ring-2 ring-white dark:ring-slate-900"
+        >
+          {Math.max(0, daysLeft)}
         </span>
       </button>
 
-      {open && (
-        <div className="absolute right-0 mt-2 w-72 rounded-xl border border-slate-700 bg-white text-slate-900 shadow-xl z-50">
-          <div className="p-4">
-            <h4 className="font-semibold text-red-600 mb-2">
-              Password expiring soon
-            </h4>
-            <p className="text-sm mb-2">
-              Your password will expire in <b>{daysLeft}</b> day
-              {daysLeft === 1 ? '' : 's'}.
-            </p>
-            <p className="text-xs text-slate-500 mb-3">
-              Last changed on {dateStr}
-            </p>
-
-            <button
-              onClick={() => navigate('/forgot-password')}
-              className="w-full bg-red-600 text-white text-sm py-1.5 rounded-lg"
-            >
-              Reset password now
-            </button>
-          </div>
-        </div>
-      )}
+      <ExpiryDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        daysLeft={daysLeft}
+        lastChanged={lastChanged}
+      />
     </div>
   );
 }
