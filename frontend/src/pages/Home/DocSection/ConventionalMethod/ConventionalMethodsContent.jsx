@@ -11,100 +11,110 @@ import {
   ViewfinderCircleIcon,
 } from '@heroicons/react/24/outline';
 
-import TechniquesComparisonTable from './TechniquesComparisonTable'; // <-- NEW: Import the table component
-import MethodAdvantages from './MethodProsConsContent'; // <-- NEW: Import the pros/cons component
+import TechniquesComparisonTable from './TechniquesComparisonTable';
+import MethodAdvantages from './MethodProsConsContent';
+import KeyGasMethodContent from './KeyGasMethodContent'; // Import the new content file
 
-// Data for the method category cards
-const ratioMethods = [
-  { name: 'The Key Gas Method', icon: <KeyIcon className="w-8 h-8" /> },
-  {
-    name: 'The Doornenburg Ratio Method',
-    icon: <CalculatorIcon className="w-8 h-8" />,
-  },
-  {
-    name: 'The Rogers Ratio Method',
-    icon: <CalculatorIcon className="w-8 h-8" />,
-  },
-  {
-    name: 'The IEC Ratio Method',
-    icon: <DocumentTextIcon className="w-8 h-8" />,
-  },
-  {
-    name: 'The Three Ratio Techniques',
-    icon: <ScaleIcon className="w-8 h-8" />,
-  },
-];
-const graphicalMethods = [
-  {
-    name: 'The Duval Triangle 1 Method',
-    icon: <ChartPieIcon className="w-8 h-8" />,
-  },
-  {
-    name: 'The Duval Triangle 4 Method',
-    icon: <ChartPieIcon className="w-8 h-8" />,
-  },
-  {
-    name: 'The Duval Triangle 5 Method',
-    icon: <ChartPieIcon className="w-8 h-8" />,
-  },
-  {
-    name: 'The Gouda Triangle Method',
-    icon: <ChartPieIcon className="w-8 h-8" />,
-  },
-  {
-    name: 'The LEDT Method',
-    icon: <ViewfinderCircleIcon className="w-8 h-8" />,
-  },
-  {
-    name: 'The Duval Pentagon 1 Method',
-    icon: <CubeTransparentIcon className="w-8 h-8" />,
-  },
-  {
-    name: 'The Duval Pentagon 2 Method',
-    icon: <CubeTransparentIcon className="w-8 h-8" />,
-  },
-  {
-    name: 'The Combine Duval Pentagon Method',
-    icon: <CubeTransparentIcon className="w-8 h-8" />,
-  },
-  {
-    name: 'The Mansour Pentagon Method',
-    icon: <CubeTransparentIcon className="w-8 h-8" />,
-  },
-  {
-    name: 'The Heptagon Graph Method',
-    icon: <ChartBarSquareIcon className="w-8 h-8" />,
-  },
-  {
-    name: 'The ETRA Square Method',
-    icon: <ChartBarSquareIcon className="w-8 h-8" />,
-  },
-];
-
-// Reusable component for the method category cards
-const MethodCard = ({ icon, name, color }) => (
-  <div className="bg-white/50 dark:bg-slate-800/60 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 p-6 flex flex-col items-center text-center">
-    <div className={`p-4 rounded-full bg-gradient-to-br ${color.gradient}`}>
-      <div className="text-white">{icon}</div>
-    </div>
-    <h5 className="mt-4 font-bold text-slate-700 dark:text-slate-200">
-      {name}
-    </h5>
-  </div>
-);
+// A single, unified data structure for all methods
+const allMethods = {
+  ratio: [
+    {
+      name: 'The Key Gas Method',
+      icon: <KeyIcon className="w-5 h-5" />,
+      component: <KeyGasMethodContent />,
+    },
+    {
+      name: 'The Doornenburg Ratio Method',
+      icon: <CalculatorIcon className="w-5 h-5" />,
+    },
+    {
+      name: 'The Rogers Ratio Method',
+      icon: <CalculatorIcon className="w-5 h-5" />,
+    },
+    {
+      name: 'The IEC Ratio Method',
+      icon: <DocumentTextIcon className="w-5 h-5" />,
+    },
+    {
+      name: 'The Three Ratio Techniques',
+      icon: <ScaleIcon className="w-5 h-5" />,
+    },
+  ],
+  graphical: [
+    {
+      name: 'The Duval Triangle 1 Method',
+      icon: <ChartPieIcon className="w-5 h-5" />,
+    },
+    {
+      name: 'The Duval Triangle 4 Method',
+      icon: <ChartPieIcon className="w-5 h-5" />,
+    },
+    {
+      name: 'The Duval Triangle 5 Method',
+      icon: <ChartPieIcon className="w-5 h-5" />,
+    },
+    {
+      name: 'The Gouda Triangle Method',
+      icon: <ChartPieIcon className="w-5 h-5" />,
+    },
+    {
+      name: 'The LEDT Method',
+      icon: <ViewfinderCircleIcon className="w-5 h-5" />,
+    },
+    {
+      name: 'The Duval Pentagon 1 Method',
+      icon: <CubeTransparentIcon className="w-5 h-5" />,
+    },
+    {
+      name: 'The Duval Pentagon 2 Method',
+      icon: <CubeTransparentIcon className="w-5 h-5" />,
+    },
+    {
+      name: 'The Combine Duval Pentagon Method',
+      icon: <CubeTransparentIcon className="w-5 h-5" />,
+    },
+    {
+      name: 'The Mansour Pentagon Method',
+      icon: <CubeTransparentIcon className="w-5 h-5" />,
+    },
+    {
+      name: 'The Heptagon Graph Method',
+      icon: <ChartBarSquareIcon className="w-5 h-5" />,
+    },
+    {
+      name: 'The ETRA Square Method',
+      icon: <ChartBarSquareIcon className="w-5 h-5" />,
+    },
+  ],
+};
 
 const ConventionalMethodsContent = () => {
   const [activeTab, setActiveTab] = useState('ratio');
+  const [selectedMethod, setSelectedMethod] = useState(allMethods.ratio[0]);
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    if (tab === 'ratio') {
+      setSelectedMethod(allMethods.ratio[0]);
+    } else if (tab === 'graphical') {
+      setSelectedMethod(allMethods.graphical[0]);
+    }
+  };
+
   const colors = {
     ratio: {
       border: 'border-purple-500',
       text: 'text-purple-600',
-      gradient: 'from-purple-500 to-indigo-500',
+      activeBg: 'bg-purple-100 dark:bg-purple-900/50',
+      activeText: 'text-purple-700 dark:text-purple-200',
+      icon: 'text-purple-500',
     },
     graphical: {
       border: 'border-teal-500',
       text: 'text-teal-600',
-      gradient: 'from-teal-500 to-cyan-500',
+      activeBg: 'bg-teal-100 dark:bg-teal-900/50',
+      activeText: 'text-teal-700 dark:text-teal-200',
+      icon: 'text-teal-500',
     },
     techniques: { border: 'border-cyan-500', text: 'text-cyan-600' },
     pros_cons: { border: 'border-orange-500', text: 'text-orange-600' },
@@ -113,34 +123,55 @@ const ConventionalMethodsContent = () => {
   const renderContent = () => {
     switch (activeTab) {
       case 'ratio':
-        return (
-          <div className="animate-fadeIn grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ratioMethods.map((method, index) => (
-              <MethodCard
-                key={index}
-                icon={method.icon}
-                name={method.name}
-                color={colors.ratio}
-              />
-            ))}
-          </div>
-        );
       case 'graphical':
+        const currentMethods =
+          activeTab === 'ratio' ? allMethods.ratio : allMethods.graphical;
+        const currentColor =
+          activeTab === 'ratio' ? colors.ratio : colors.graphical;
+
         return (
-          <div className="animate-fadeIn grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {graphicalMethods.map((method, index) => (
-              <MethodCard
-                key={index}
-                icon={method.icon}
-                name={method.name}
-                color={colors.graphical}
-              />
-            ))}
+          <div className="animate-fadeIn flex flex-col md:flex-row gap-8 items-start">
+            {/* --- Sidebar (Master Column) --- */}
+            <div className="w-full md:w-1/3 lg:w-1/4 flex-shrink-0">
+              <div className="space-y-1 bg-slate-100 dark:bg-slate-800/50 p-2 rounded-lg">
+                {currentMethods.map((method) => (
+                  <button
+                    key={method.name}
+                    onClick={() => setSelectedMethod(method)}
+                    className={`w-full flex items-center gap-3 text-left p-2 rounded-md transition-colors text-sm font-medium ${
+                      selectedMethod.name === method.name
+                        ? `${currentColor.activeBg} ${currentColor.activeText}`
+                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700/50'
+                    }`}
+                  >
+                    <span className={currentColor.icon}>{method.icon}</span>
+                    {method.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {/* --- Content Area (Detail Column) --- */}
+            <div className="flex-1 w-full min-h-[400px]">
+              <div key={selectedMethod.name} className="animate-fadeIn">
+                {selectedMethod.component ? (
+                  selectedMethod.component
+                ) : (
+                  <div className="bg-white/50 dark:bg-slate-800/60 rounded-xl shadow-lg p-6 text-center">
+                    <h4 className="font-bold text-slate-800 dark:text-slate-200">
+                      {selectedMethod.name}
+                    </h4>
+                    <p className="mt-4 text-slate-500 dark:text-slate-400">
+                      Detailed content for this method is being prepared.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         );
       case 'techniques':
         return (
-          <div className="animate-fadeIn space-y-8">
+          <div className="animate-fadeIn">
             <TechniquesComparisonTable />
           </div>
         );
@@ -169,7 +200,7 @@ const ConventionalMethodsContent = () => {
       <div className="mt-8 border-b border-slate-200 dark:border-slate-700">
         <nav className="-mb-px flex space-x-6" aria-label="Tabs">
           <button
-            onClick={() => setActiveTab('ratio')}
+            onClick={() => handleTabClick('ratio')}
             className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
               activeTab === 'ratio'
                 ? `${colors.ratio.border} ${colors.ratio.text}`
@@ -179,7 +210,7 @@ const ConventionalMethodsContent = () => {
             Ratio Methods
           </button>
           <button
-            onClick={() => setActiveTab('graphical')}
+            onClick={() => handleTabClick('graphical')}
             className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
               activeTab === 'graphical'
                 ? `${colors.graphical.border} ${colors.graphical.text}`
@@ -198,7 +229,6 @@ const ConventionalMethodsContent = () => {
           >
             Interpretation Techniques
           </button>
-          {/* NEW: Button for the Advantages/Disadvantages tab */}
           <button
             onClick={() => setActiveTab('pros_cons')}
             className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
