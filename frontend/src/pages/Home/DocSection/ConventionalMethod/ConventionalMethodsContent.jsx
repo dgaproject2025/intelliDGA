@@ -13,7 +13,8 @@ import {
 
 import TechniquesComparisonTable from './TechniquesComparisonTable';
 import MethodAdvantages from './MethodProsConsContent';
-import KeyGasMethodContent from './KeyGasMethodContent'; // Import the new content file
+import KeyGasMethodContent from './KeyGasMethodContent';
+import DoornenburgMethodContent from './DoornenburgMethodContent';
 
 // A single, unified data structure for all methods
 const allMethods = {
@@ -26,6 +27,7 @@ const allMethods = {
     {
       name: 'The Doornenburg Ratio Method',
       icon: <CalculatorIcon className="w-5 h-5" />,
+      component: <DoornenburgMethodContent />, // <-- Link the new component
     },
     {
       name: 'The Rogers Ratio Method',
