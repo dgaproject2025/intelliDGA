@@ -19,6 +19,10 @@ import RogersMethodContent from './RogerRatioMethod/RogersMethodContent';
 import IECRatioMethodContent from './TheIECRatioMethod/IECRatioMethodContent';
 import ThreeRatioMethodContent from './ThreeRatioTechnique/ThreeRatioMethodContent';
 
+import DuvalTriangleMethodContent from './GraphicalMethod/DuvalTriangle1Method/DuvalTriangle1MethodContent';
+import DuvalTriangle4MethodContent from './GraphicalMethod/DuvalTriangle4Method/DuvalTriangle4MethodContent';
+import DuvalTriangle5MethodContent from './GraphicalMethod/DuvalTriangle5Method /DuvalTriangle5MethodContent';
+
 // A single, unified data structure for all methods
 const allMethods = {
   ratio: [
@@ -52,14 +56,17 @@ const allMethods = {
     {
       name: 'The Duval Triangle 1 Method',
       icon: <ChartPieIcon className="w-5 h-5" />,
+      component: <DuvalTriangleMethodContent />, // <-- Link the new component
     },
     {
       name: 'The Duval Triangle 4 Method',
       icon: <ChartPieIcon className="w-5 h-5" />,
+      component: <DuvalTriangle4MethodContent />, // <-- Link the new component
     },
     {
       name: 'The Duval Triangle 5 Method',
       icon: <ChartPieIcon className="w-5 h-5" />,
+      component: <DuvalTriangle5MethodContent />, // <-- Link the new component
     },
     {
       name: 'The Gouda Triangle Method',
