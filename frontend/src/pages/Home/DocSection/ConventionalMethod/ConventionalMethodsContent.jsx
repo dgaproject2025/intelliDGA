@@ -13,8 +13,11 @@ import {
 
 import TechniquesComparisonTable from './TechniquesComparisonTable';
 import MethodAdvantages from './MethodProsConsContent';
-import KeyGasMethodContent from './KeyGasMethodContent';
-import DoornenburgMethodContent from './DoornenburgMethodContent';
+import KeyGasMethodContent from './KeyGasMethod/KeyGasMethodContent';
+import DoornenburgMethodContent from './DornenburgRatioMethod/DoornenburgMethodContent';
+import RogersMethodContent from './RogerRatioMethod/RogersMethodContent';
+import IECRatioMethodContent from './TheIECRatioMethod/IECRatioMethodContent';
+import ThreeRatioMethodContent from './ThreeRatioTechnique/ThreeRatioMethodContent';
 
 // A single, unified data structure for all methods
 const allMethods = {
@@ -32,14 +35,17 @@ const allMethods = {
     {
       name: 'The Rogers Ratio Method',
       icon: <CalculatorIcon className="w-5 h-5" />,
+      component: <RogersMethodContent />, // <-- Link the new component
     },
     {
       name: 'The IEC Ratio Method',
       icon: <DocumentTextIcon className="w-5 h-5" />,
+      component: <IECRatioMethodContent />, // <-- Link the new component
     },
     {
       name: 'The Three Ratio Techniques',
       icon: <ScaleIcon className="w-5 h-5" />,
+      component: <ThreeRatioMethodContent />, // <-- Link the new component
     },
   ],
   graphical: [

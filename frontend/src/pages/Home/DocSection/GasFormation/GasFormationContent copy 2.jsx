@@ -3,13 +3,6 @@ import React, { useState } from 'react';
 import StickyTitledPanel from './StickyTitledPanel';
 import ChemistryOfGasFormation from './ChemistryOfGasFormation';
 import GasFormationMechanism from './GasFormationMechanism';
-import SourceOfDgaGas from './SourcesOfDgaGas';
-
-import RelativeGasConcentrations from './RelativeGasConcentrations';
-
-import TemperatureRelationship from './TemperatureRelationship';
-
-import GasesAssociatedWithFaults from './GasesAssociatedWithFaults';
 
 // ====================================================================================
 // ICON Component (Unchanged)
@@ -63,34 +56,19 @@ const GasFormationIcon = () => {
 };
 
 // ====================================================================================
-/* CONTENT CARD: Title is now sticky while the body scrolls locally.
-   - Keeps your original styles/colors/spacing
-   - No visual change except the title bar stays pinned during scroll
-*/
+// CONTENT CARD AND DEFINITIONS (Unchanged)
 // ====================================================================================
 const ContentCard = ({ title, children }) => (
-  <div className="h-full">
-    <div className="bg-blue-300 dark:bg-blue-100 h-full shadow-lg dark:shadow-blue-900/20 ring-1 ring-sky-200 dark:ring-sky-900 transition-all duration-300">
-      {/* Local scroll container */}
-      <div className="relative h-full max-h-screen overflow-y-auto">
-        {/* Sticky title bar (uses your exact h1 styles) */}
-        <div className="sticky top-0 z-10 bg-blue-300/90 dark:bg-blue-100/90 backdrop-blur border-b border-sky-200/70 dark:border-sky-900/40 px-8 pt-8 pb-4">
-          <h1 className="text-center dark:text-slate-800 text-3xl lg:text-4xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-sky-700 dark:from-blue-400 dark:to-sky-00 text-transparent bg-clip-text">
-            {title}
-          </h1>
-        </div>
-
-        {/* Scrollable body (spacing preserved: total equals original p-8) */}
-        <div className="px-8 pb-8 pt-4">
-          <div className="text-slate-600 dark:text-slate-800 text-lg space-y-4">
-            {children}
-          </div>
-        </div>
-      </div>
+  // ADD h-full here to ensure the card takes up the full height of the main area
+  <div className="bg-blue-300 dark:bg-blue-100 h-full p-8 shadow-lg dark:shadow-blue-900/20 ring-1 ring-sky-200 dark:ring-sky-900 transition-all duration-300">
+    <h1 className="text-center dark:text-slate-800 text-3xl lg:text-4xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-sky-700 dark:from-blue-400 dark:to-sky-00 text-transparent bg-clip-text mb-6">
+      {title}
+    </h1>
+    <div className="text-slate-600 dark:text-slate-800 text-lg space-y-4">
+      {children}
     </div>
   </div>
 );
-
 const ChemistryContent = () => (
   <ContentCard title="The Chemistry of Gas Formation">
     <ChemistryOfGasFormation />
@@ -103,26 +81,22 @@ const MechanismContent = () => (
 );
 const SourcesContent = () => (
   <ContentCard title="Primary Sources of Dissolved Gases">
-    <SourceOfDgaGas />
+    {/* ... content unchanged ... */}
   </ContentCard>
 );
 const TemperatureContent = () => (
   <ContentCard title="Relationship Between Gas & Temperature">
     {/* ... content unchanged ... */}
-
-    <TemperatureRelationship />
   </ContentCard>
 );
 const ConcentrationsContent = () => (
   <ContentCard title="Relative Gas Concentrations vs. Fault Types">
     {/* ... content unchanged ... */}
-    <RelativeGasConcentrations />
   </ContentCard>
 );
 const SpecificFaultsContent = () => (
   <ContentCard title="Gases Associated with Specific Faults">
     {/* ... content unchanged ... */}
-    <GasesAssociatedWithFaults />
   </ContentCard>
 );
 
@@ -169,7 +143,7 @@ const DgaTopicsLayout = () => {
       {/* 2. Navigation Container: Fixed height and its own scrolling */}
       <nav
         className="w-80 flex-shrink-0 bg-blue-500 dark:bg-blue-600 p-4 border-r border-slate-800 dark:border-slate-200 
-                   max-h-screen overflow-y-auto"
+                   max-h-screen overflow-y-auto" // <-- ADDED: max-h-screen and overflow-y-auto
       >
         {/* Navigation header/title - stays at the top */}
         <div className="p-4 mb-4">
@@ -208,8 +182,10 @@ const DgaTopicsLayout = () => {
         </ul>
       </nav>
 
-      {/* 3. Main Content Area: Can scroll, but each card now also scrolls locally with sticky title */}
-      <main className="flex-1 overflow-y-auto max-h-screen h-full">
+      {/* 3. Main Content Area: Fixed height and its own scrolling */}
+      <main
+        className="flex-1 overflow-y-auto max-h-screen h-full" // <-- ADDED: max-h-screen and flex-1 already set
+      >
         {renderContent()}
       </main>
     </div>
