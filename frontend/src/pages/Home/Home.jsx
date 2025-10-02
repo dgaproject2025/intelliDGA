@@ -11,7 +11,7 @@ import HeroSection from './HeroSection/HeroSection';
 export default function Home() {
   return (
     <div
-      className=" w-full
+      className=" w-full 
                  flex flex-col bg-blue-50 dark:bg-slate-900 transition-colors mb-0  "
     >
       {/* Hero Section */}

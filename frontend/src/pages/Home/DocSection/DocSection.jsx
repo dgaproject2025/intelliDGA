@@ -45,63 +45,6 @@ const docTopics = [
     // NO ICON here for the large content panel, so it will render full-width
     component: <ConventionalMethodsContent />,
   },
-  { id: 5, title: 'The Key Gas Method', icon: <KeyIcon className="w-5 h-5" /> },
-  {
-    id: 6,
-    title: 'Dornenburg Ratio',
-    icon: <DocumentTextIcon className="w-5 h-5" />,
-  },
-  {
-    id: 7,
-    title: 'Rogers Ratio',
-    icon: <DocumentTextIcon className="w-5 h-5" />,
-  },
-  { id: 8, title: 'IEC Ratio', icon: <DocumentTextIcon className="w-5 h-5" /> },
-  {
-    id: 9,
-    title: 'Three Ratio Method',
-    icon: <DocumentTextIcon className="w-5 h-5" />,
-  },
-  {
-    id: 10,
-    title: 'Duval Triangle',
-    icon: <ChartPieIcon className="w-5 h-5" />,
-    content: {
-      heading: 'A Graphical Diagnostic Tool',
-      description:
-        'The Duval Triangle is an internationally recognized graphical method that uses the relative concentrations of methane (CH₄), ethylene (C₂H₄), and acetylene (C₂H₂) to visually diagnose the type of fault.',
-      points: [
-        '<strong>Principle:</strong> Maps the percentage of each gas onto a triangular plot with defined fault zones.',
-        '<strong>Fault Zones:</strong> Includes PD, Thermal Faults (T1, T2, T3), and Discharges (D1, D2).',
-        '<strong>Advantage:</strong> Provides a simple, powerful, and highly effective visual diagnosis.',
-      ],
-    },
-  },
-  {
-    id: 11,
-    title: 'Duval Pentagon',
-    icon: <CubeTransparentIcon className="w-5 h-5" />,
-  },
-  {
-    id: 12,
-    title: 'Gouda Triangle',
-    icon: <ChartPieIcon className="w-5 h-5" />,
-  },
-  {
-    id: 13,
-    title: 'LED Triangle',
-    icon: <ViewfinderCircleIcon className="w-5 h-5" />,
-  },
-  {
-    id: 14,
-    title: 'Mansour Pentagon',
-    icon: <CubeTransparentIcon className="w-5 h-5" />,
-  },
-  {
-    id: 15,
-    title: 'Heptagon Graph',
-    icon: <PuzzlePieceIcon className="w-5 h-5" />,
-  },
 ];
 
 const DocSection = () => {
@@ -112,18 +55,18 @@ const DocSection = () => {
   const animationStyle = `@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } } .animate-fadeIn { animation: fadeIn 0.6s ease-in-out; }`;
 
   return (
-    <section className="relative bg-slate-50 dark:bg-black py-20 sm:py-28 overflow-hidden">
+    <section className="relative bg-blue-300 dark:bg-black py-20 sm:py-28 overflow-hidden ">
       <style>{animationStyle}</style>
 
       <div className="absolute top-0 left-0 -translate-x-1/3 -translate-y-1/2 ">
-        <div className="w-[800px] h-[800px] rounded-full bg-gradient-to-tr from-sky-100 to-blue-200 blur-3xl opacity-40 dark:opacity-20" />
+        <div className="w-[800px] h-[800px]  bg-gradient-to-tr from-sky-100 to-blue-200 blur-3xl opacity-40 dark:opacity-20" />
       </div>
       <div className="absolute bottom-0 right-0 translate-x-1/3 translate-y-1/2">
         <div className="w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-amber-100 to-orange-200 blur-3xl opacity-40 dark:opacity-20" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-14">
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 ">
+        <div className="text-center mb-10">
           <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 to-sky-500 text-transparent bg-clip-text">
             Explore DGA Methodologies
           </h2>
@@ -133,18 +76,18 @@ const DocSection = () => {
           </p>
         </div>
 
-        <div className="rounded-2xl shadow-2xl bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <nav className="border-b border-slate-200/80 dark:border-slate-800/80">
+        <div className="rounded-md shadow-2xl bg-blue-200 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+          <nav className=" flex justify-around border-b border-slate-200/80 dark:border-slate-800/80 bg-blue-400 ">
             <style>{`.tabs-scrollbar::-webkit-scrollbar { height: 0px; }`}</style>
-            <div className="flex overflow-x-auto p-2 tabs-scrollbar">
+            <div className="flex  overflow-x-auto p-2 tabs-scrollbar">
               {docTopics.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-3 flex-shrink-0 whitespace-nowrap px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 ${
                     activeTab === tab.id
-                      ? 'bg-sky-50 dark:bg-slate-800/80 text-[#1f75fe]'
-                      : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800/50 hover:text-gray-800 dark:hover:text-gray-200'
+                      ? 'bg-sky-50 dark:bg-slate-100 '
+                      : 'text-gray-500 dark:text-blue-800 hover:bg-gray-100 dark:hover:bg-slate-200 hover:text-gray-800 dark:hover:text-blue-500'
                   }`}
                 >
                   {/* Icon will show here if it exists in docTopics */}

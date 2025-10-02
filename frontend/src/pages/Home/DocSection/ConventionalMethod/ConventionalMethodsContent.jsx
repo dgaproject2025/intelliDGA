@@ -22,6 +22,7 @@ import ThreeRatioMethodContent from './ThreeRatioTechnique/ThreeRatioMethodConte
 import DuvalTriangleMethodContent from './GraphicalMethod/DuvalTriangle1Method/DuvalTriangle1MethodContent';
 import DuvalTriangle4MethodContent from './GraphicalMethod/DuvalTriangle4Method/DuvalTriangle4MethodContent';
 import DuvalTriangle5MethodContent from './GraphicalMethod/DuvalTriangle5Method /DuvalTriangle5MethodContent';
+import DuvalPentagon1MethodContent from './GraphicalMethod/DuvalPentagon1Method/DuvalPentagon1MethodContent';
 
 // A single, unified data structure for all methods
 const allMethods = {
@@ -79,6 +80,7 @@ const allMethods = {
     {
       name: 'The Duval Pentagon 1 Method',
       icon: <CubeTransparentIcon className="w-5 h-5" />,
+      component: <DuvalPentagon1MethodContent />, // <-- Link the new component
     },
     {
       name: 'The Duval Pentagon 2 Method',
