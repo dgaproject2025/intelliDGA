@@ -24,6 +24,10 @@ import DuvalTriangle4MethodContent from './GraphicalMethod/DuvalTriangle4Method/
 import DuvalTriangle5MethodContent from './GraphicalMethod/DuvalTriangle5Method /DuvalTriangle5MethodContent';
 import DuvalPentagon1MethodContent from './GraphicalMethod/DuvalPentagon1Method/DuvalPentagon1MethodContent';
 
+import DuvalPentagon2MethodContent from './GraphicalMethod/DuvalPentagon2Method /DuvalPentagon2MethodContent';
+
+import GoudaTriangleMethodContent from './GraphicalMethod/GoudaTriangleMethod/GoudaTriangleMethodContent';
+
 // A single, unified data structure for all methods
 const allMethods = {
   ratio: [
@@ -72,6 +76,7 @@ const allMethods = {
     {
       name: 'The Gouda Triangle Method',
       icon: <ChartPieIcon className="w-5 h-5" />,
+      component: <GoudaTriangleMethodContent />, // <-- Link the new component
     },
     {
       name: 'The LEDT Method',
@@ -85,6 +90,7 @@ const allMethods = {
     {
       name: 'The Duval Pentagon 2 Method',
       icon: <CubeTransparentIcon className="w-5 h-5" />,
+      component: <DuvalPentagon2MethodContent />, // <-- Link the new component
     },
     {
       name: 'The Combine Duval Pentagon Method',
