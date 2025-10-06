@@ -28,6 +28,16 @@ import DuvalPentagon2MethodContent from './GraphicalMethod/DuvalPentagon2Method 
 
 import GoudaTriangleMethodContent from './GraphicalMethod/GoudaTriangleMethod/GoudaTriangleMethodContent';
 
+import TheLEDTMethodContent from './GraphicalMethod/TheLEDTMethod/TheLEDTMethodContent';
+
+import TheMansourPentagonMethodContent from './GraphicalMethod/TheMansourPentagon/TheMansourPentagonMethodContent';
+
+import TheHeptagonGraphMethodContent from './GraphicalMethod/TheHeptagonGraphMethod/TheHeptagonGraphMethodContent';
+
+import TheETRASquareMethodContent from './GraphicalMethod/ERTASquareMethod/TheERTASquareMethodContent';
+
+import TheCombinedDuvalPentagonMethodContent from './GraphicalMethod/TheCombinedDuvalPentagonMethod/TheCombinedDuvalPentagonMethodContent';
+
 // A single, unified data structure for all methods
 const allMethods = {
   ratio: [
@@ -81,6 +91,7 @@ const allMethods = {
     {
       name: 'The LEDT Method',
       icon: <ViewfinderCircleIcon className="w-5 h-5" />,
+      component: <TheLEDTMethodContent />, // <-- Link the new component
     },
     {
       name: 'The Duval Pentagon 1 Method',
@@ -95,18 +106,22 @@ const allMethods = {
     {
       name: 'The Combine Duval Pentagon Method',
       icon: <CubeTransparentIcon className="w-5 h-5" />,
+      component: <TheCombinedDuvalPentagonMethodContent />, // <-- Link the new component
     },
     {
       name: 'The Mansour Pentagon Method',
       icon: <CubeTransparentIcon className="w-5 h-5" />,
+      component: <TheMansourPentagonMethodContent />, // <-- Link the new component
     },
     {
       name: 'The Heptagon Graph Method',
       icon: <ChartBarSquareIcon className="w-5 h-5" />,
+      component: <TheHeptagonGraphMethodContent />, // <-- Link the new component
     },
     {
       name: 'The ETRA Square Method',
       icon: <ChartBarSquareIcon className="w-5 h-5" />,
+      component: <TheETRASquareMethodContent />, // <-- Link the new component
     },
   ],
 };

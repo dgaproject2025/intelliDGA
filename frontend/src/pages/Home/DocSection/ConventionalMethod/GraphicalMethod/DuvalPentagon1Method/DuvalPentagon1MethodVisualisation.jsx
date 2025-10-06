@@ -32,7 +32,7 @@ export default function DuvalPentagon1Visualization({
       name: 'D1',
       coords: [
         [0, 40],
-        [38, 12],
+        [38, 12.4],
         [32, -6.1],
         [4, 16],
         [0, 1.5],
