@@ -3,19 +3,27 @@ import { Link } from 'react-router-dom';
 
 // Import your assets
 // Card 1 asset
-import Logo from './asset_lightTheme/logo.svg'; // Assuming this is the path to your logo
+//import Logo from './asset_lightTheme/logo.svg'; // Assuming this is the path to your logo
+
+import Logo from '../../../assets/logo.svg';
 
 // Card 2 assets
-import lightHero2 from './asset_lightTheme/light_hero_1.png';
-import darkHero2 from './asset_darkTheme/dark_hero_2.png';
+//import lightHero2 from './asset_lightTheme/light_hero_1.png';
+import lightHero2 from '../../../assets/HeroSection/asset_lightTheme_HeroSection/light_hero_1.png';
+//import darkHero2 from './asset_darkTheme/dark_hero_2.png';
+import darkHero2 from '../../../assets/HeroSection/asset_darkTheme_HeroSection/dark_hero_2.png';
 
 // Card 3 assets
-import lightHero3 from './asset_lightTheme/light_hero_3.png';
-import darkHero3 from './asset_darkTheme/dark_hero_3.png';
+//import lightHero3 from './asset_lightTheme/light_hero_3.png';
+import lightHero3 from '../../../assets/HeroSection/asset_lightTheme_HeroSection/light_hero_3.png';
+//import darkHero3 from './asset_darkTheme/dark_hero_3.png';
+import darkHero3 from '../../../assets/HeroSection/asset_darkTheme_HeroSection/dark_hero_3.png';
 
 // Card 4 assets
-import lightHero4 from './asset_lightTheme/light_hero_4.png';
-import darkHero4 from './asset_darkTheme/dark_hero_4.png';
+//import lightHero4 from './asset_lightTheme/light_hero_4.png';
+import lightHero4 from '../../../assets/HeroSection/asset_lightTheme_HeroSection/light_hero_4.png';
+//import darkHero4 from './asset_darkTheme/dark_hero_4.png';
+import darkHero4 from '../../../assets/HeroSection/asset_darkTheme_HeroSection/dark_hero_4.png';
 
 const slides = [
   {

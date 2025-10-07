@@ -55,7 +55,7 @@ const Header = () => {
     'flex items-center gap-1.5 px-3 py-1.5 rounded text-sm font-semibold text-white bg-white/30';
 
   return (
-    <header className="bg-[#1f75fe] h-20 dark:bg-slate-900 fixed top-0 left-0 z-50 shadow-md border-b border-blue-700/40 dark:border-slate-700 w-full">
+    <header className="bg-[#1f75fe] h-20 dark:bg-slate-900 fixed top-0 left-0 inset-x-0 z-50 shadow-md border-b border-blue-700/40 dark:border-slate-700 w-full">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
         {/* Logo (left) */}
         <Link to="/" className="flex items-center gap-3">

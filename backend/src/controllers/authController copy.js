@@ -54,23 +54,24 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
-    // --- ⬇️ MODIFICATION START ⬇️ ---
-    // Removed 'fullName' from the uniqueness check query.
+    // Uniqueness checks
     const exists = await User.findOne({
-      $or: [{ email: email.toLowerCase() }, { mobile }, { username }],
+      $or: [
+        { email: email.toLowerCase() },
+        { mobile },
+        { username },
+        { fullName },
+      ],
     });
-    // --- ⬆️ MODIFICATION END ⬆️ ---
-
     if (exists) {
-      // We can make this message more specific now.
-      return res.status(409).json({
-        message: 'A user with that Email, Mobile, or Username already exists.',
-      });
+      return res
+        .status(409)
+        .json({ message: 'A user with provided unique fields already exists' });
     }
 
     const hashed = await bcrypt.hash(password, 12);
 
-    const user = new User({
+    const user = await User.create({
       fullName,
       email: email.toLowerCase(),
       mobile,
@@ -81,16 +82,13 @@ export const registerUser = async (req, res) => {
       createdBy: 'self',
     });
 
-    await user.save();
-
     const token = signToken({ id: user._id, role: user.role });
     setTokenCookie(res, token);
 
     return res.status(201).json({
-      message: `Signup is Successful with IntelliDGA id - ${user.intelliDGAId}`,
+      message: 'Signup successful',
       user: {
         id: user._id,
-        intelliDGAId: user.intelliDGAId,
         fullName: user.fullName,
         email: user.email,
         mobile: user.mobile,
@@ -99,15 +97,16 @@ export const registerUser = async (req, res) => {
         role: user.role,
         createdAt: user.createdAt,
       },
-      token,
+      token, // also return in body for non-cookie clients
     });
   } catch (err) {
     console.error('registerUser error:', err);
 
+    // Friendly duplicate handling (Mongo E11000)
     if (err?.code === 11000) {
       const field = Object.keys(err.keyPattern || {})[0] || 'field';
       return res.status(409).json({
-        message: `An account with that ${field} already exists. Please use a different ${field}.`,
+        message: `Duplicate value for ${field}. Please use a different ${field}.`,
       });
     }
 

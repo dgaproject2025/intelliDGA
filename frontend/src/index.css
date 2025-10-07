@@ -78,3 +78,13 @@
 .dark .aurora-layer {
   filter: blur(28px) brightness(1.05);
 }
+
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  /* Tailwind already sets margin:0 via preflight, but keep this explicit */
+  margin: 0;
+}

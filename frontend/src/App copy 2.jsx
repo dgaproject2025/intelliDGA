@@ -9,7 +9,7 @@ import Footer from './components/Footer/Footer';
 import Home from './pages/Home/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Equipment from './pages/Equipment/Equipment';
+import Equipment from './pages/Equipment';
 import Analysis from './pages/Analysis';
 import History from './pages/History';
 import Report from './pages/Report';
@@ -35,22 +35,30 @@ function PasswordGuardedApp() {
   const { mustReset, isExpired, showWarning, daysLeft } = useAuthStatus();
 
   return (
-    // This container is now fixed to the screen height
-    <div className="h-screen flex flex-col bg-gray-50 dark:bg-slate-900 transition-colors">
+    /**
+     * Layout:
+     * - Header is fixed at top (assumed h-20).
+     * - Main takes remaining space (flex-1) so Footer sits at bottom after content.
+     * - We now use 'page-offset' class for padding when required.
+     */
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-slate-900 transition-colors">
+      {/* Auto-logout/watchdog */}
       <ExpiryWatcher />
+
+      {/* Fixed header (make sure your Header has h-20 for 80px height) */}
       <Header />
 
-      {/* This div becomes the main scrollable container */}
-      <div className="flex-1 overflow-y-auto pt-20">
-        <main className="flex-1">
-          {/* Padding wrappers are no longer needed for individual routes */}
+      {/* Main content wrapper */}
+      <div className="flex-1 flex flex-col">
+        <main className="pt-20 scroll-pt-20 flex-1">
+          {/* Global page-level padding is removed from here. */}
           <Routes>
             {/* Public */}
             <Route path="/" element={<Home />} />{' '}
             <Route
               path="/login"
               element={
-                <div className="px-0 py-8">
+                <div className="pt-20 px-0 py-8">
                   <Login />
                 </div>
               }
@@ -58,7 +66,7 @@ function PasswordGuardedApp() {
             <Route
               path="/signup"
               element={
-                <div className="px-0 py-8">
+                <div className="pt-20 px-0 py-8">
                   <Signup />
                 </div>
               }
@@ -67,7 +75,7 @@ function PasswordGuardedApp() {
             <Route
               path="/forgot-password"
               element={
-                <div className="px-0 py-8">
+                <div className="pt-20 px-0 py-8">
                   <PasswordHelp />
                 </div>
               }
@@ -75,7 +83,7 @@ function PasswordGuardedApp() {
             <Route
               path="/reset-password"
               element={
-                <div className="px-0 py-8">
+                <div className="pt-20 px-0 py-8">
                   <PasswordHelp />
                 </div>
               }
@@ -85,7 +93,9 @@ function PasswordGuardedApp() {
               path="/equipment"
               element={
                 <ProtectedRoute>
-                  <Equipment />
+                  <div className="pt-20 px-0 py-8">
+                    <Equipment />
+                  </div>{' '}
                 </ProtectedRoute>
               }
             />
@@ -152,7 +162,7 @@ function PasswordGuardedApp() {
           </Routes>
         </main>
 
-        {/* The Footer is now inside the scrollable area */}
+        {/* Footer always directly after content */}
         <Footer />
       </div>
     </div>

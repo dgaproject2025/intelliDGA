@@ -1,7 +1,7 @@
 //import HealthCheck from '../components/HealthCheck';
 //import AuthPing from '../components/AuthPing';
 
-// frontend/src/pages/Home/Home.jsx
+// frontend/src/pages/Home.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../Home/logo.svg';
@@ -12,9 +12,8 @@ import HeroSection from './HeroSection/HeroSection';
 import CallToAction from '../../components/CallToAction/CallToAction';
 export default function Home() {
   return (
-    // The `min-h-screen` class has been removed here.
     <div
-      className=" w-full   
+      className=" min-h-screen w-full   
                  flex flex-col bg-blue-50 dark:bg-slate-900 transition-colors mb-0  "
     >
       <HeroSection />
@@ -33,7 +32,7 @@ export default function Home() {
               {
                 title: 'AI-Driven Insights',
                 desc: 'Advanced algorithms to detect patterns and predict transformer failures early.',
-                icon: '🧠',
+                icon: '💡',
               },
               {
                 title: 'Multi-Method Analysis',
@@ -48,7 +47,7 @@ export default function Home() {
               {
                 title: 'Secure Access',
                 desc: 'Role-based authentication, password policies, and audit trails built-in.',
-                icon: '🔒',
+                icon: '🔐',
               },
               {
                 title: 'Responsive Design',
@@ -58,7 +57,7 @@ export default function Home() {
               {
                 title: 'Reporting & Export',
                 desc: 'Generate professional reports and export insights in multiple formats.',
-                icon: '📄',
+                icon: '📝',
               },
             ].map((f) => (
               <div

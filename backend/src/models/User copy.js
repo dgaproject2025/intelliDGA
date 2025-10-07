@@ -1,28 +1,11 @@
 import mongoose from 'mongoose';
 
-// Helper function to generate the unique 4-digit suffix with distinct digits
-const generateDistinctSuffix = () => {
-  const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-  // Fisher-Yates shuffle algorithm to randomize the digits array
-  for (let i = digits.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [digits[i], digits[j]] = [digits[j], digits[i]];
-  }
-  // Return the first 4 digits joined as a string
-  return digits.slice(0, 4).join('');
-};
-
 const userSchema = new mongoose.Schema(
   {
-    intelliDGAId: {
-      type: String,
-      unique: true,
-      required: true,
-      trim: true,
-    },
     fullName: {
       type: String,
       required: true,
+      unique: true,
       trim: true,
       minlength: 2,
       maxlength: 100,
@@ -54,12 +37,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       minlength: 6,
-      select: false,
+      select: false, // exclude password from queries unless explicitly requested
     },
     organization: {
       type: String,
       required: true,
       trim: true,
+      // unique: true, // keep disabled to allow multiple users per org
     },
     role: {
       type: String,
@@ -71,50 +55,29 @@ const userSchema = new mongoose.Schema(
       enum: ['active', 'inactive', 'locked'],
       default: 'active',
     },
+
+    // 🔎 Audit fields
     lastLogin: { type: Date },
     loginAttempts: { type: Number, default: 0 },
     lockedUntil: { type: Date },
     createdBy: { type: String, default: 'system' },
     updatedBy: { type: String },
+
+    // 🔑 Password reset
     resetToken: { type: String },
     resetTokenExpires: { type: Date },
+
+    // 🕒 Track when password was last changed (for expiry/notifications)
     passwordLastChanged: {
       type: Date,
       default: Date.now,
     },
   },
-  { timestamps: true }
+  { timestamps: true } // adds createdAt and updatedAt automatically
 );
 
-// --- ⬇️ MODIFICATION START ⬇️ ---
-// Changed hook from 'save' to 'validate' to ensure ID is generated
-// BEFORE validation checks for the 'required' field are run.
-userSchema.pre('validate', async function (next) {
-  // --- ⬆️ MODIFICATION END ⬆️ ---
-  // Only generate an ID if the document is new
-  if (this.isNew) {
-    let newId;
-    let isUnique = false;
-
-    // Loop until a unique ID is found
-    while (!isUnique) {
-      const suffix = generateDistinctSuffix();
-      newId = `IN20${suffix}`;
-      const existingUser = await mongoose.models.User.findOne({
-        intelliDGAId: newId,
-      });
-      if (!existingUser) {
-        isUnique = true;
-      }
-    }
-    this.intelliDGAId = newId;
-  }
-  next();
-});
-
-// This separate pre-save hook is fine to keep for logic that is not part of validation
+// Ensure email is always lowercase before saving
 userSchema.pre('save', function (next) {
-  // Ensure email is always lowercase before saving
   if (this.isModified('email')) {
     this.email = this.email.toLowerCase();
   }

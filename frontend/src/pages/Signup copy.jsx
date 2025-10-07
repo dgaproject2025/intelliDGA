@@ -33,9 +33,7 @@ export default function Signup() {
     setLoading(true);
     try {
       const res = await signupUser(form);
-      // res.message will now contain the full string from the backend
-      // e.g., "Signup is Successful with IntelliDGA id - IN201234"
-      toast.success(res?.message || 'Signup successful!'); // This works as is!
+      toast.success(res?.message || 'Signup successful!');
       window.dispatchEvent(new Event('auth:changed'));
       setTimeout(() => navigate('/'), 300);
     } catch (error) {
