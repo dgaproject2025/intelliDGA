@@ -116,8 +116,6 @@ const DUMMY_EQUIPMENT = [
     createdBy: 'R. Sharma',
     createdAt: '2025-01-23',
   },
-
-  /* Repeats to simulate larger dataset (ids repeat on purpose for testing) */
   {
     id: 'EQ-1001',
     designation: '220kV Power Transformer-1',
@@ -214,7 +212,54 @@ const DUMMY_EQUIPMENT = [
     createdBy: 'R. Sharma',
     createdAt: '2025-01-23',
   },
-
+  {
+    id: 'EQ-1001',
+    designation: '220kV Power Transformer-1',
+    sapId: 'PT220-01',
+    station: 'Main Yard',
+    type: 'Transformer',
+    unit: 'Unit-10',
+    status: 'In Service',
+    manufacturer: 'Siemens',
+    createdBy: 'A. Verma',
+    createdAt: '2025-06-12',
+  },
+  {
+    id: 'EQ-1002',
+    designation: '220kV Power Transformer-2',
+    sapId: 'PT220-02',
+    station: 'Main Yard',
+    type: 'Transformer',
+    unit: 'Unit-20',
+    status: 'Under Maintenance',
+    manufacturer: 'ABB',
+    createdBy: 'R. Sharma',
+    createdAt: '2025-07-03',
+  },
+  {
+    id: 'EQ-1003',
+    designation: '66kV Bus Coupler',
+    sapId: 'BC66-01',
+    station: 'GIS Hall',
+    type: 'Switchgear',
+    unit: 'Unit-30',
+    status: 'In Service',
+    manufacturer: 'Toshiba',
+    createdBy: 'P. Singh',
+    createdAt: '2025-05-28',
+  },
+  {
+    id: 'EQ-1004',
+    designation: '11kV Feeder-17',
+    sapId: 'FD11-17',
+    station: 'Aux Substation',
+    type: 'Feeder',
+    unit: 'Unit-40',
+    status: 'Out of Service',
+    manufacturer: 'Schneider',
+    createdBy: 'A. Verma',
+    createdAt: '2025-04-20',
+  },
   {
     id: 'EQ-1005',
     designation: '220kV CT Bank',
@@ -239,7 +284,78 @@ const DUMMY_EQUIPMENT = [
     createdBy: 'M. Khan',
     createdAt: '2025-03-02',
   },
-
+  {
+    id: 'EQ-1007',
+    designation: 'Service Transformer-1',
+    sapId: 'ST-01',
+    station: 'Aux Substation',
+    type: 'Transformer',
+    unit: 'Unit-50',
+    status: 'Under Maintenance',
+    manufacturer: 'BHEL',
+    createdBy: 'System',
+    createdAt: '2025-08-09',
+  },
+  {
+    id: 'EQ-1008',
+    designation: 'Critical Motor—Circulation Pump',
+    sapId: 'CM-CP-01',
+    station: 'TG Floor',
+    type: 'Motor',
+    unit: 'Unit-30',
+    status: 'In Service',
+    manufacturer: 'WEG',
+    createdBy: 'R. Sharma',
+    createdAt: '2025-01-23',
+  },
+  {
+    id: 'EQ-1001',
+    designation: '220kV Power Transformer-1',
+    sapId: 'PT220-01',
+    station: 'Main Yard',
+    type: 'Transformer',
+    unit: 'Unit-10',
+    status: 'In Service',
+    manufacturer: 'Siemens',
+    createdBy: 'A. Verma',
+    createdAt: '2025-06-12',
+  },
+  {
+    id: 'EQ-1002',
+    designation: '220kV Power Transformer-2',
+    sapId: 'PT220-02',
+    station: 'Main Yard',
+    type: 'Transformer',
+    unit: 'Unit-20',
+    status: 'Under Maintenance',
+    manufacturer: 'ABB',
+    createdBy: 'R. Sharma',
+    createdAt: '2025-07-03',
+  },
+  {
+    id: 'EQ-1003',
+    designation: '66kV Bus Coupler',
+    sapId: 'BC66-01',
+    station: 'GIS Hall',
+    type: 'Switchgear',
+    unit: 'Unit-30',
+    status: 'In Service',
+    manufacturer: 'Toshiba',
+    createdBy: 'P. Singh',
+    createdAt: '2025-05-28',
+  },
+  {
+    id: 'EQ-1004',
+    designation: '11kV Feeder-17',
+    sapId: 'FD11-17',
+    station: 'Aux Substation',
+    type: 'Feeder',
+    unit: 'Unit-40',
+    status: 'Out of Service',
+    manufacturer: 'Schneider',
+    createdBy: 'A. Verma',
+    createdAt: '2025-04-20',
+  },
   {
     id: 'EQ-1005',
     designation: '220kV CT Bank',
@@ -264,55 +380,29 @@ const DUMMY_EQUIPMENT = [
     createdBy: 'M. Khan',
     createdAt: '2025-03-02',
   },
-
   {
-    id: 'EQ-1005',
-    designation: '220kV CT Bank',
-    sapId: 'CT220-01',
-    station: 'Main Yard',
-    type: 'CT',
-    unit: 'Unit-10',
-    status: 'In Service',
-    manufacturer: 'GE',
+    id: 'EQ-1007',
+    designation: 'Service Transformer-1',
+    sapId: 'ST-01',
+    station: 'Aux Substation',
+    type: 'Transformer',
+    unit: 'Unit-50',
+    status: 'Under Maintenance',
+    manufacturer: 'BHEL',
     createdBy: 'System',
-    createdAt: '2025-02-15',
+    createdAt: '2025-08-09',
   },
   {
-    id: 'EQ-1006',
-    designation: 'UPS–A Room',
-    sapId: 'UPS-A-01',
-    station: 'Control Building',
-    type: 'UPS',
-    unit: 'Unit-20',
+    id: 'EQ-1008',
+    designation: 'Critical Motor—Circulation Pump',
+    sapId: 'CM-CP-01',
+    station: 'TG Floor',
+    type: 'Motor',
+    unit: 'Unit-30',
     status: 'In Service',
-    manufacturer: 'Eaton',
-    createdBy: 'M. Khan',
-    createdAt: '2025-03-02',
-  },
-
-  {
-    id: 'EQ-1005',
-    designation: '220kV CT Bank',
-    sapId: 'CT220-01',
-    station: 'Main Yard',
-    type: 'CT',
-    unit: 'Unit-10',
-    status: 'In Service',
-    manufacturer: 'GE',
-    createdBy: 'System',
-    createdAt: '2025-02-15',
-  },
-  {
-    id: 'EQ-1006',
-    designation: 'UPS–A Room',
-    sapId: 'UPS-A-01',
-    station: 'Control Building',
-    type: 'UPS',
-    unit: 'Unit-20',
-    status: 'In Service',
-    manufacturer: 'Eaton',
-    createdBy: 'M. Khan',
-    createdAt: '2025-03-02',
+    manufacturer: 'WEG',
+    createdBy: 'R. Sharma',
+    createdAt: '2025-01-23',
   },
 ];
 
@@ -492,38 +582,13 @@ export default function EquipmentList() {
     return rows;
   }, [filtered, sortKey, sortDir]);
 
-  /* =========================
-     Pagination — EXACT math:
-     pagesCeil = ceil(E / Y)
-     pagesFloor = floor(E / Y)
-     lastPageCount = E - pagesFloor * Y (or Y if divisible)
-     ========================= */
-  const total = sorted.length; // E
-  const pagesCeil = Math.max(1, Math.ceil(total / pageSize)); // ceil(E/Y)
-  const pagesFloor = Math.floor(total / pageSize); // floor(E/Y)
-  const lastPageCountRaw = total - pagesFloor * pageSize; // E - floor(E/Y)*Y
-  const lastPageCount =
-    lastPageCountRaw === 0 && total > 0 ? pageSize : lastPageCountRaw || 0;
-
-  // Clamp page if beyond last page after filters/sorts/size change
-  useEffect(() => {
-    if (page > pagesCeil) setPage(pagesCeil);
-  }, [page, pagesCeil]);
-
-  // Reset to page 1 when pageSize or view mode changes
-  useEffect(() => {
-    setPage(1);
-  }, [pageSize, viewMode]);
-
-  // Current page slice honoring Y per page (and last-page remainder)
+  // Pagination
+  const total = sorted.length;
+  const pageCount = Math.max(1, Math.ceil(total / pageSize));
   const current = useMemo(() => {
     const start = (page - 1) * pageSize;
-    const endExclusive =
-      page === pagesCeil
-        ? Math.min(start + pageSize, start + (lastPageCount || pageSize))
-        : start + pageSize;
-    return sorted.slice(start, endExclusive);
-  }, [sorted, page, pageSize, pagesCeil, lastPageCount]);
+    return sorted.slice(start, start + pageSize);
+  }, [sorted, page, pageSize]);
 
   const toggleSort = (key) => {
     if (sortKey === key) {
@@ -555,7 +620,7 @@ export default function EquipmentList() {
     setSavedViews((v) => v.filter((x) => x.name !== name));
 
   return (
-    <div className="w-full relative overflow-hidden text-gray-500 dark:text-gray-200">
+    <div className="w-full relative overflow-hidden text-gray-500 dark:text-gray-200 ">
       {/* Ambient aurora */}
       <div className="absolute inset-0 pointer-events-none -z-10">
         <div className="absolute -top-32 -right-32 w-96 h-96 rounded-md blur-3xl bg-blue-400/10" />
@@ -572,10 +637,7 @@ export default function EquipmentList() {
           <ViewSwitcher
             className="rounded-md"
             viewMode={viewMode}
-            setViewMode={(mode) => {
-              setViewMode(mode);
-              setPage(1);
-            }}
+            setViewMode={setViewMode}
           />
 
           <button
@@ -642,7 +704,7 @@ export default function EquipmentList() {
                 `equipment_${new Date().toISOString().slice(0, 10)}.csv`
               );
             }}
-            className="text-gray-500 dark:text-gray-200 inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-md border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-800 transition"
+            className="text-gray-500 dark:text-gray-200  inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-md border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-800 transition"
           >
             <DownloadIcon className="w-4 h-4" />
             Export CSV
@@ -650,13 +712,14 @@ export default function EquipmentList() {
         </div>
       </div>
 
-      {/* Filters & active pills */}
       <div className="rounded-md border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-900/50 p-4">
+        {/* Active pills */}
         <ActiveFilterPills
           filters={filters}
           setFilters={setFilters}
           clearFilters={clearFilters}
         />
+        {/* Filters */}
         <EquipmetFilter
           showFilters={showFilters}
           setShowFilters={setShowFilters}
@@ -670,7 +733,7 @@ export default function EquipmentList() {
       </div>
 
       <ResultsToolbar
-        total={total}
+        total={sorted.length}
         page={page}
         pageSize={pageSize}
         setPage={setPage}
@@ -679,9 +742,7 @@ export default function EquipmentList() {
         sortDir={sortDir}
         setSortKey={setSortKey}
         toggleSort={toggleSort}
-        viewMode={viewMode}
-        pagesCeil={pagesCeil}
-        lastPageCount={lastPageCount}
+        viewMode={viewMode} // ← add this
         onReset={() => {
           clearFilters();
           setSortKey('createdAt');
@@ -694,13 +755,9 @@ export default function EquipmentList() {
       {sorted.length === 0 ? (
         <EmptyState onClear={clearFilters} />
       ) : viewMode === 'card' ? (
-        <EquipmentGrid
-          key={`grid-${page}-${pageSize}`} // force remount on page/size change
-          items={current}
-        />
+        <EquipmentGrid items={current} />
       ) : (
         <EquipmentTable
-          key={`table-${page}-${pageSize}`} // force remount on page/size change
           rows={current}
           sortKey={sortKey}
           sortDir={sortDir}
@@ -712,7 +769,7 @@ export default function EquipmentList() {
       {sorted.length > 0 && (
         <Pagination
           page={page}
-          pageCount={pagesCeil} // ceil(E/Y)
+          pageCount={Math.max(1, Math.ceil(sorted.length / pageSize))}
           setPage={setPage}
         />
       )}
@@ -731,31 +788,19 @@ const ResultsToolbar = ({
   sortDir,
   setSortKey,
   toggleSort,
-  viewMode,
-  pagesCeil,
-  lastPageCount,
+  viewMode, // ← read this
   onReset,
 }) => {
-  const startIndex = total === 0 ? 0 : (page - 1) * pageSize + 1;
-  const endIndex =
-    page === pagesCeil
-      ? Math.min(
-          page * pageSize,
-          (page - 1) * pageSize + (lastPageCount || pageSize)
-        )
-      : Math.min(page * pageSize, total);
-
   return (
     <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-md border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/40 p-3">
       <div className="text-sm text-slate-600 dark:text-slate-300">
         Showing{' '}
         <span className="font-semibold">
-          {total === 0 ? 0 : startIndex}–{endIndex}
+          {total === 0 ? 0 : (page - 1) * pageSize + 1}–
+          {Math.min(page * pageSize, total)}
         </span>{' '}
         of <span className="font-semibold">{total}</span> items
-        <span className="ml-2 text-xs opacity-80">(Pages: {pagesCeil})</span>
       </div>
-
       <div className="flex items-center gap-2">
         <SortControl
           sortKey={sortKey}
@@ -763,24 +808,26 @@ const ResultsToolbar = ({
           setSortKey={setSortKey}
           toggleSort={toggleSort}
         />
-
         {/* Page-size control: Cards vs Rows */}
         {(() => {
-          const SIZES = Array.from({ length: 25 }, (_, i) => (i + 1) * 4); // 4..100
+          // 4 → 100 in steps of 4
+          const SIZES = Array.from({ length: 25 }, (_, i) => (i + 1) * 4);
           const isCard = viewMode === 'card';
           const label = isCard ? 'Cards:' : 'Rows:';
+
           return (
             <div className="flex items-center gap-2">
               <span className="text-sm font-semibold text-gray-500 dark:text-gray-200">
                 {label}
               </span>
+
               <select
                 className="px-3 py-2 text-sm rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-700 dark:text-gray-100 min-w-[110px]"
                 value={pageSize}
                 onChange={(e) => {
                   const next = Number(e.target.value);
                   setPageSize(next);
-                  setPage(1); // always reset so first page shows exactly Y items
+                  setPage(1);
                 }}
                 title={isCard ? 'Cards per page' : 'Rows per page'}
               >

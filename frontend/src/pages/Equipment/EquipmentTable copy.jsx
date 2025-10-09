@@ -30,9 +30,10 @@ function formatAge(fromStr) {
   return `${a.y}y ${a.m}m ${a.d}d`;
 }
 
-/** Table with flexible widths, visible grid lines (dark & light), and local horizontal scroll */
+/** Table with flexible widths, vertical lines, and local horizontal scroll */
 export default function EquipmentTable({ rows, sortKey, sortDir, toggleSort }) {
-  // NOTE: 3 requested columns are ALWAYS visible; Equipment column is no-wrap.
+  // NOTE: No hideOn for the 3 requested columns so they ALWAYS render.
+  // colClass controls sizing; tdClass can enforce nowrap on the Equipment column.
   const columns = [
     {
       key: 'equipment',
@@ -55,8 +56,8 @@ export default function EquipmentTable({ rows, sortKey, sortDir, toggleSort }) {
     },
 
     { key: 'station', label: 'Station', colClass: 'min-w-[160px] w-[10%]' },
-    { key: 'type', label: 'Type', colClass: 'min-w-[160px] w-[10%]' },
-    { key: 'unit', label: 'Unit', colClass: 'min-w-[140px] w-[8%]' },
+    { key: 'type', label: 'Type', colClass: 'min-w-[160px] w-[10%]' }, // kept visible
+    { key: 'unit', label: 'Unit', colClass: 'min-w-[140px] w-[8%]' }, // kept visible
 
     {
       key: 'commissionedAt',
@@ -86,9 +87,9 @@ export default function EquipmentTable({ rows, sortKey, sortDir, toggleSort }) {
       key: 'createdBy',
       label: 'Equipment Created by',
       colClass: 'min-w-[180px] w-[12%]',
-    },
+    }, // visible
 
-    // ALWAYS visible
+    // >>> ALWAYS VISIBLE NOW <<<
     {
       key: 'lastEditDate',
       label: 'Last Edit Date',
@@ -109,6 +110,7 @@ export default function EquipmentTable({ rows, sortKey, sortDir, toggleSort }) {
   const ariaSortFor = (key) =>
     sortKey === key ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none';
 
+  // Render with fallbacks; content contained to the column
   const renderCell = (key, r) => {
     switch (key) {
       case 'equipment':
@@ -133,6 +135,7 @@ export default function EquipmentTable({ rows, sortKey, sortDir, toggleSort }) {
         );
       case 'editReason': {
         const txt = r.editReason || '—';
+        // Max content width + wrapping after a reasonable length (~60ch)
         return (
           <div
             className="max-w-[60ch] whitespace-normal break-words leading-relaxed hyphens-auto"
@@ -147,10 +150,14 @@ export default function EquipmentTable({ rows, sortKey, sortDir, toggleSort }) {
     }
   };
 
+  // Apply width classes to headers & cells (colgroup alone can't enforce min-w in all browsers)
   const sizeCls = (c) => c.colClass || '';
 
   return (
-    <div className="mt-4 rounded-md border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/40 backdrop-blur text-gray-500 dark:text-gray-200 shadow-lg">
+    <div
+      className="mt-4 rounded-md border border-slate-200 dark:border-slate-800
+  bg-white/50 dark:bg-slate-900/40 backdrop-blur text-gray-500 dark:text-gray-200 shadow-lg"
+    >
       {/* Local horizontal scroll (table only) */}
       <div className="relative overflow-x-auto overscroll-x-contain rounded-md">
         <table className="w-full table-auto text-sm">
@@ -161,8 +168,8 @@ export default function EquipmentTable({ rows, sortKey, sortDir, toggleSort }) {
             ))}
           </colgroup>
 
-          <thead className="text-white sticky top-0 z-10 bg-blue-500 dark:bg-slate-900/60 backdrop-blur">
-            <tr className="border-b border-slate-200/70 dark:border-slate-700">
+          <thead className=" text-white sticky top-0 z-10 bg-blue-500 dark:bg-slate-900/60 backdrop-blur">
+            <tr className="border-b border-slate-200/70 dark:border-slate-800">
               {columns.map((c) => {
                 const activeKey = c.sortKey || c.key;
                 const isActive = sortKey === activeKey;
@@ -170,7 +177,7 @@ export default function EquipmentTable({ rows, sortKey, sortDir, toggleSort }) {
                   <th
                     key={c.key}
                     aria-sort={ariaSortFor(activeKey)}
-                    className={`px-4 py-3 font-semibold text-left border-r last:border-r-0 border-slate-200 dark:border-slate-700 ${sizeCls(
+                    className={`px-4 py-3 font-semibold text-left border-r last:border-r-0 border-slate-200 dark:border-slate-800 ${sizeCls(
                       c
                     )}`}
                   >
@@ -198,23 +205,23 @@ export default function EquipmentTable({ rows, sortKey, sortDir, toggleSort }) {
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-slate-200/70 dark:divide-slate-700">
-            {rows.map((r, idx) => (
+          <tbody className="divide-y divide-slate-200/70 dark:divide-slate-800">
+            {rows.map((r) => (
               <tr
-                key={`${r.id || r.intelliId || r.sapId || 'row'}-${idx}`}
+                key={r.id}
                 className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors align-top"
               >
-                {columns.map((c, cIdx) => {
+                {columns.map((c, idx) => {
                   const val = renderCell(c.key, r);
                   const wrap = c.tdClass?.includes('whitespace-nowrap')
                     ? 'whitespace-nowrap'
                     : 'whitespace-normal break-words';
                   return (
                     <td
-                      key={`${c.key}-${cIdx}`}
+                      key={c.key}
                       className={`px-4 py-3 ${
-                        cIdx === 0 ? 'font-semibold' : ''
-                      } border-r last:border-r-0 border-slate-200 dark:border-slate-700 ${wrap} ${sizeCls(
+                        idx === 0 ? 'font-semibold' : ''
+                      } border-r last:border-r-0 border-slate-200 dark:border-slate-800 ${wrap} ${sizeCls(
                         c
                       )} ${c.tdClass || ''}`}
                       title={typeof val === 'string' ? val : undefined}

@@ -72,7 +72,7 @@ function Equipment() {
     <div className="bg-gray-50 dark:bg-slate-900 min-h-full transition-colors duration-500">
       <EquipmentHero onOpenModal={() => setIsModalOpen(true)} />
 
-      <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8 bg-blue-200 dark:bg-blue-600">
+      <main className="w-full mx-auto py-10 px-4 sm:px-6 lg:px-8 bg-blue-200 dark:bg-blue-600">
         <EquipmentList equipmentData={equipmentData} />
       </main>
 
